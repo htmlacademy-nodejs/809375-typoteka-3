@@ -1,6 +1,6 @@
 "use strict";
 
-const path = require("path");
+const path = require(`path`);
 const fs = require(`fs`).promises;
 
 const {
@@ -11,7 +11,7 @@ const {
   shuffleArray,
 } = require(`../../utils`);
 
-const FILE_NAME = path.resolve(__dirname, "../../../", "mocks.json");
+const FILE_NAME = path.resolve(__dirname, `../../../`, `mocks.json`);
 const MIN_ANNOUNCE_LENGTH = 1;
 const MAX_ANNOUNCE_LENGTH = 5;
 const MAX_MONTH_PAST = 3;
@@ -65,7 +65,7 @@ const CATEGORIES = [
   `Железо`,
 ];
 
-const generateOffers = (count, { titles, sentences, categories }) => {
+const generateOffers = (count, {titles, sentences, categories}) => {
   return [...Array(count)].map(() => {
     return {
       title: getRandomItemFrom(titles),

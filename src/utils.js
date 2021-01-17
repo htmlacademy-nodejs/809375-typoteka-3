@@ -31,7 +31,7 @@ const generatePastDate = (pastMonthAmount) => {
 const formatDate = (date) => {
   return date
     .toISOString()
-    .replace("T", " ")
+    .replace(`T`, ` `)
     .substr(0, 19);
 };
 
