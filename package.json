@@ -24,9 +24,14 @@
   "homepage": "https://github.com/Shramkoweb/809375-typoteka-3#readme",
   "devDependencies": {
     "eslint": "7.18.0",
-    "eslint-config-htmlacademy": "0.6.0"
+    "eslint-config-htmlacademy": "0.6.0",
+    "husky": "4.3.8"
   },
   "dependencies": {
     "commander": "7.0.0"
+  },
+  "husky": {
+    "pre-commit": "npm test",
+    "pre-push": "npm test"
   }
 }
