@@ -1,0 +1,29 @@
+{
+  "name": "typoteka",
+  "version": "1.0.0",
+  "description": "«Типотека»",
+  "main": "./src/service/service.js",
+  "scripts": {
+    "eslint": "eslint --ext .js src/",
+    "start": "node ./src/service/service.js",
+    "test": "npm run eslint"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Shramkoweb/809375-typoteka-3.git"
+  },
+  "keywords": [
+    "node",
+    "express"
+  ],
+  "author": "Serhii Shramko <shramko.web@yahoo.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Shramkoweb/809375-typoteka-3/issues"
+  },
+  "homepage": "https://github.com/Shramkoweb/809375-typoteka-3#readme",
+  "devDependencies": {
+    "eslint": "7.18.0",
+    "eslint-config-htmlacademy": "0.6.0"
+  }
+}
