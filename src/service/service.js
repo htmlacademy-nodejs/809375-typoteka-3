@@ -10,7 +10,7 @@ const MAX_PUBLICATION_AMOUNT = 1000;
 commander
   .version(packageJsonFile.version, `-v, --version`)
   .option(`-g, --generate [count]`, `generates mocks.json files`, `1`)
-  .action(({ generate }) => {
+  .action(({generate}) => {
     if (process.argv.length === 2) {
       commander.help();
     }
