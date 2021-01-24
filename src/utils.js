@@ -1,5 +1,8 @@
 "use strict";
 
+const chalk = require(`chalk`);
+const fs = require(`fs`).promises;
+
 const getRandomInt = (min, max) => {
   const minimal = Math.ceil(min);
   const maximal = Math.floor(max);
@@ -35,10 +38,23 @@ const formatDate = (date) => {
     .substr(0, 19);
 };
 
+const readContent = async (filePath) => {
+  try {
+    const content = await fs.readFile(filePath, `utf8`);
+    return removeBlankLines(content);
+  } catch (err) {
+    return console.error(chalk.red(err));
+  }
+};
+
+const removeBlankLines = (string) => string.trim().split(`\n`);
+
 module.exports = {
   formatDate,
   generatePastDate,
   getRandomInt,
   getRandomItemFrom,
   shuffleArray,
+  readContent,
+  removeBlankLines,
 };
