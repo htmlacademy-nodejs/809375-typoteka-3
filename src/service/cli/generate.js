@@ -1,6 +1,7 @@
 "use strict";
 
 const path = require(`path`);
+const chalk = require(`chalk`);
 const fs = require(`fs`).promises;
 
 const {
@@ -92,10 +93,10 @@ const createMocks = async (count) => {
     const content = JSON.stringify(offers);
     await fs.writeFile(FILE_NAME, content);
 
-    console.log(`Success write ${count} mocks to ${FILE_NAME}`);
+    console.log(chalk.green(`Success write ${count} mocks to ${FILE_NAME}`));
     process.exit(0);
   } catch (err) {
-    console.log(err);
+    console.error(chalk.red(err));
   }
 };
 

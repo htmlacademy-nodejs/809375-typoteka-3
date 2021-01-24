@@ -1,6 +1,7 @@
 "use strict";
 
 const commander = require(`commander`);
+const chalk = require(`chalk`);
 
 const packageJsonFile = require(`../../package.json`);
 const generateOffers = require(`./cli/generate`);
@@ -18,7 +19,7 @@ commander
     const count = parseInt(generate, 10);
 
     if (count > MAX_PUBLICATION_AMOUNT) {
-      console.log(`Не больше 1000 объявлений`);
+      console.info(chalk.blue(`Не больше 1000 объявлений`));
       process.exit(1);
     }
 

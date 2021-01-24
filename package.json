@@ -29,6 +29,7 @@
     "lint-staged": "^10.5.3"
   },
   "dependencies": {
+    "chalk": "4.1.0",
     "commander": "7.0.0"
   },
   "husky": {
