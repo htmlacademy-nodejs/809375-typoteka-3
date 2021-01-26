@@ -13,10 +13,11 @@ const {
   readContent,
 } = require(`../../utils`);
 
-const MOCK_FILE = path.resolve(__dirname, `../../../`, `mocks.json`);
-const SENTENCES_FILE = path.resolve(__dirname, `../../../data`, `sentences.txt`);
-const TITLES_FILE = path.resolve(__dirname, `../../../data`, `titles.txt`);
-const CATEGORIES_FILE = path.resolve(__dirname, `../../../data`, `categories.txt`);
+const ROOT_PATH = path.resolve(__dirname, `../../../`);
+const MOCK_FILE = path.resolve(ROOT_PATH, `mocks.json`);
+const SENTENCES_FILE = path.resolve(ROOT_PATH, `data/sentences.txt`);
+const TITLES_FILE = path.resolve(ROOT_PATH, `data/titles.txt`);
+const CATEGORIES_FILE = path.resolve(ROOT_PATH, `data/categories.txt`);
 const MIN_ANNOUNCE_LENGTH = 1;
 const MAX_ANNOUNCE_LENGTH = 5;
 const MAX_MONTH_PAST = 3;
@@ -45,7 +46,7 @@ const createMocks = async (count) => {
       readContent(CATEGORIES_FILE),
     ]);
 
-    const offers = generateOffers(parseInt(count, 10), {
+    const offers = generateOffers(count, {
       titles,
       sentences,
       categories,
