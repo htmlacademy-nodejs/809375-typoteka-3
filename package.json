@@ -7,6 +7,7 @@
     "eslint": "eslint --ext .js src/",
     "server": "nodemon ./src/service/service.js --server 3000",
     "start": "node ./src/service/service.js -g 11",
+    "start-front-server": "nodemon src/express/bin/www.js",
     "test": "npm run eslint"
   },
   "repository": {
@@ -32,7 +33,8 @@
   },
   "dependencies": {
     "chalk": "4.1.0",
-    "commander": "7.0.0"
+    "commander": "7.0.0",
+    "express": "4.17.1"
   },
   "husky": {
     "hooks": {
