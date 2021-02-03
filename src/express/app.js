@@ -8,8 +8,12 @@ const articlesRouter = require(`./routes/articles`);
 
 const app = express();
 
+const PORT = 3000;
+
 app.use(`/`, rootRouter);
 app.use(`/my`, myRouter);
 app.use(`/articles`, articlesRouter);
 
-module.exports = app;
+app.listen(PORT, () => {
+  console.log(`Example app listening at http://localhost:${PORT}`);
+});
