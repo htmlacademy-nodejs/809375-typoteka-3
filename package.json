@@ -5,7 +5,7 @@
   "main": "./src/service/service.js",
   "scripts": {
     "eslint": "eslint --ext .js src/",
-    "server": "nodemon ./src/service/service.js --server 3000",
+    "server": "nodemon ./src/service/service.js --server 3131",
     "start": "node ./src/service/service.js -g 11",
     "start-front-server": "nodemon src/express/app.js",
     "test": "npm run eslint"
@@ -35,6 +35,7 @@
     "chalk": "4.1.0",
     "commander": "7.0.0",
     "express": "4.17.1",
+    "http-status-codes": "2.1.4",
     "nanoid": "3.1.20",
     "pug": "2.0.4"
   },
