@@ -1,9 +1,9 @@
 "use strict";
 
-const {categoriesController} = require(`./categories.controller`);
 const {CategoriesService} = require(`./categories.service`);
+const {categoriesController} = require(`./categories.controller`);
 
 module.exports = {
-  categoriesController,
   CategoriesService,
+  categoriesController,
 };

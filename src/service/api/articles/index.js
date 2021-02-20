@@ -1,11 +1,13 @@
 "use strict";
 
-const {articlesController} = require(`./articles.controller`);
-const {ArticlesService} = require(`./articles.service`);
 const articleValidator = require(`./articles.validators`);
+const {ArticlesService} = require(`./articles.service`);
+const {CommentService} = require(`./comment/index`);
+const {articlesController} = require(`./articles.controller`);
 
 module.exports = {
   ArticlesService,
-  articlesController,
+  CommentService,
   articleValidator,
+  articlesController,
 };
