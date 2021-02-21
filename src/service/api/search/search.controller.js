@@ -14,7 +14,7 @@ module.exports = (searchService) => {
     }
 
     const searchResults = searchService.findAll(query);
-    console.log(searchResults);
+
     return res.status(StatusCodes.OK).json(searchResults);
   });
 
