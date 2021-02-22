@@ -3,11 +3,10 @@
 const {StatusCodes} = require(`http-status-codes`);
 const {Router} = require(`express`);
 
-const {getLogger} = require(`../../logger`);
+const {logger} = require(`../../logger`);
 
 module.exports = (searchService) => {
   const route = new Router();
-  const logger = getLogger();
 
   route.get(`/`, (req, res) => {
     const {query = ``} = req.query;

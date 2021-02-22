@@ -1,12 +1,11 @@
 "use strict";
 
-const chalk = require(`chalk`);
 const express = require(`express`);
 
 const initApiRouter = require(`../api`);
+const {logger} = require(`../logger`);
 
 const PORT = 3001;
-
 
 module.exports = async (port = PORT) => {
   const app = express();
@@ -18,9 +17,9 @@ module.exports = async (port = PORT) => {
 
   app.listen(port, (err) => {
     if (err) {
-      return console.error(chalk.red(`Server creation error ${err}`));
+      return logger.error(`SERVER: Server creation error ${err}`);
     }
 
-    return console.info(chalk.green(`Waiting for connections on ${port}`));
+    return logger.debug(`Waiting for connections on ${port}`);
   });
 };

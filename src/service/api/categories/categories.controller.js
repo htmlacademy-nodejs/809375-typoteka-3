@@ -3,11 +3,10 @@
 const {StatusCodes} = require(`http-status-codes`);
 const {Router} = require(`express`);
 
-const {getLogger} = require(`../../logger`);
+const {logger} = require(`../../logger`);
 
 const categoriesController = (categoriesService) => {
   const route = new Router();
-  const logger = getLogger();
 
   route.get(`/`, (req, res) => {
     const categories = categoriesService.findAll();

@@ -6,12 +6,10 @@ const {Router} = require(`express`);
 
 const articleValidator = require(`./articles.validators`);
 const {commentValidators} = require(`./comment`);
-const {getLogger} = require(`../../logger`);
+const {logger} = require(`../../logger`);
 
 const articlesController = (articlesService, commentService) => {
   const route = new Router();
-  const logger = getLogger();
-
 
   route.get(`/`, (req, res) => {
     const offers = articlesService.findAll();
