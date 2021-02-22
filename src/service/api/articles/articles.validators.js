@@ -3,9 +3,6 @@
 const {ReasonPhrases, StatusCodes} = require(`http-status-codes`);
 const {checkSchema} = require(`express-validator`);
 
-const {getLogger} = require(`../../logger`);
-
-
 exports.create = checkSchema({
   title: {
     notEmpty: {
@@ -64,8 +61,6 @@ exports.create = checkSchema({
 });
 
 exports.exist = (articlesService) => (req, res, next) => {
-  const logger = getLogger();
-
   const {articleId} = req.params;
   const article = articlesService.findByID(articleId);
 
@@ -73,6 +68,5 @@ exports.exist = (articlesService) => (req, res, next) => {
     next();
   } else {
     res.status(StatusCodes.NOT_FOUND).json(ReasonPhrases.NOT_FOUND);
-    logger.error(`ARTICLE-VALIDATE: ${req.path} - end request with status code ${res.statusCode}`);
   }
 };

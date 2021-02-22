@@ -3,8 +3,6 @@
 const {StatusCodes} = require(`http-status-codes`);
 const {Router} = require(`express`);
 
-const {logger} = require(`../../logger`);
-
 module.exports = (searchService) => {
   const route = new Router();
 
@@ -12,15 +10,12 @@ module.exports = (searchService) => {
     const {query = ``} = req.query;
 
     if (!query) {
-      res.status(StatusCodes.BAD_REQUEST).json([]);
-      logger.error(`SEARCH: ${req.path} - end request with status code ${res.statusCode}`);
-      return;
+      return res.status(StatusCodes.BAD_REQUEST).json([]);
     }
 
     const searchResults = searchService.findAll(query);
 
-    res.status(StatusCodes.OK).json(searchResults);
-    logger.info(`SEARCH: ${req.path} - end request with status code ${res.statusCode}`);
+    return res.status(StatusCodes.OK).json(searchResults);
   });
 
   return route;

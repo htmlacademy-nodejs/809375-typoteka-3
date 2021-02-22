@@ -1,6 +1,7 @@
 "use strict";
 
 const express = require(`express`);
+const pino = require(`express-pino-logger`);
 
 const initApiRouter = require(`../api`);
 const {logger} = require(`../logger`);
@@ -12,7 +13,9 @@ module.exports = async (port = PORT) => {
 
   const apiRoute = await initApiRouter();
 
+
   app.use(express.json());
+  app.use(pino({logger}));
   app.use(`/api`, apiRoute);
 
   app.listen(port, (err) => {

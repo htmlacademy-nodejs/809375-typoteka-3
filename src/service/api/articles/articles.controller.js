@@ -6,7 +6,6 @@ const {Router} = require(`express`);
 
 const articleValidator = require(`./articles.validators`);
 const {commentValidators} = require(`./comment`);
-const {logger} = require(`../../logger`);
 
 const articlesController = (articlesService, commentService) => {
   const route = new Router();
@@ -14,8 +13,7 @@ const articlesController = (articlesService, commentService) => {
   route.get(`/`, (req, res) => {
     const offers = articlesService.findAll();
 
-    res.status(StatusCodes.OK).json(offers);
-    logger.info(`ARTICLE: ${req.path} - end request with status code ${res.statusCode}`);
+    return res.status(StatusCodes.OK).json(offers);
   });
 
   route.post(`/`, articleValidator.create, ((req, res) => {
@@ -25,13 +23,10 @@ const articlesController = (articlesService, commentService) => {
     if (errors.length === 0) {
       const article = articlesService.create(req.body);
 
-      res.status(StatusCodes.OK).json(article);
-      logger.info(`ARTICLE: ${req.path} - end request with status code ${res.statusCode}`);
-      return;
+      return res.status(StatusCodes.OK).json(article);
     }
 
-    res.status(StatusCodes.UNPROCESSABLE_ENTITY).json({errors: result.mapped()});
-    logger.error(`ARTICLE: ${req.path} - end request with status code ${res.statusCode}`);
+    return res.status(StatusCodes.UNPROCESSABLE_ENTITY).json({errors: result.mapped()});
   }));
 
   route.put(`/:articleId`, articleValidator.create, articleValidator.exist(articlesService), ((req, res) => {
@@ -43,13 +38,10 @@ const articlesController = (articlesService, commentService) => {
     if (errors.length === 0) {
       const offer = articlesService.update(articleId, req.body);
 
-      res.status(StatusCodes.OK).json(offer);
-      logger.info(`ARTICLE: ${req.path} - end request with status code ${res.statusCode}`);
-      return;
+      return res.status(StatusCodes.OK).json(offer);
     }
 
-    res.status(StatusCodes.BAD_REQUEST).json({errors: result.mapped()});
-    logger.error(`ARTICLE: ${req.path} - end request with status code ${res.statusCode}`);
+    return res.status(StatusCodes.BAD_REQUEST).json({errors: result.mapped()});
   }));
 
   route.delete(`/:articleId`, articleValidator.exist(articlesService), ((req, res) => {
@@ -57,8 +49,7 @@ const articlesController = (articlesService, commentService) => {
 
     const deletedArticle = articlesService.delete(articleId);
 
-    res.status(StatusCodes.OK).json(deletedArticle);
-    logger.info(`ARTICLE: ${req.path} - end request with status code ${res.statusCode}`);
+    return res.status(StatusCodes.OK).json(deletedArticle);
   }));
 
   route.get(`/:articleId`, articleValidator.exist(articlesService), ((req, res) => {
@@ -66,8 +57,7 @@ const articlesController = (articlesService, commentService) => {
 
     const article = articlesService.findByID(articleId);
 
-    res.status(StatusCodes.OK).json(article);
-    logger.info(`ARTICLE: ${req.path} - end request with status code ${res.statusCode}`);
+    return res.status(StatusCodes.OK).json(article);
   }));
 
   route.get(`/:articleId/comments`, articleValidator.exist(articlesService), ((req, res) => {
@@ -76,8 +66,7 @@ const articlesController = (articlesService, commentService) => {
 
     const comments = commentService.findAll(article);
 
-    res.status(StatusCodes.OK).json(comments);
-    logger.info(`ARTICLE: ${req.path} - end request with status code ${res.statusCode}`);
+    return res.status(StatusCodes.OK).json(comments);
   }));
 
   route.delete(`/:articleId/comments/:commentId`, articleValidator.exist(articlesService), commentValidators.exist(commentService, articlesService), (req, res) => {
@@ -87,8 +76,7 @@ const articlesController = (articlesService, commentService) => {
 
     const deletedComment = commentService.delete(article, commentId);
 
-    res.status(StatusCodes.OK).send(deletedComment);
-    logger.info(`ARTICLE: ${req.path} - end request with status code ${res.statusCode}`);
+    return res.status(StatusCodes.OK).send(deletedComment);
   });
 
   route.post(`/:articleId/comments/`, articleValidator.exist(articlesService), commentValidators.create, (req, res) => {
@@ -102,13 +90,10 @@ const articlesController = (articlesService, commentService) => {
     if (errors.length === 0) {
       const comment = commentService.create(article, req.body);
 
-      res.status(StatusCodes.OK).json(comment);
-      logger.info(`ARTICLE: ${req.path} - end request with status code ${res.statusCode}`);
-      return;
+      return res.status(StatusCodes.OK).json(comment);
     }
 
-    res.status(StatusCodes.UNPROCESSABLE_ENTITY).json({errors: result.mapped()});
-    logger.error(`ARTICLE: ${req.path} - end request with status code ${res.statusCode}`);
+    return res.status(StatusCodes.UNPROCESSABLE_ENTITY).json({errors: result.mapped()});
   });
 
   return route;
