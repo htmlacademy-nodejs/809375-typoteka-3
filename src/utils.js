@@ -1,6 +1,8 @@
 "use strict";
 
 const chalk = require(`chalk`);
+const {MAX_ID_LENGTH} = require(`./constants`);
+const {nanoid} = require(`nanoid`);
 const fs = require(`fs`).promises;
 
 const getRandomInt = (min, max) => {
@@ -49,6 +51,21 @@ const readContent = async (filePath) => {
 
 const removeBlankLines = (string) => string.trim().split(`\n`);
 
+const generateCommentsFrom = (array, count) => {
+  const comments = [];
+
+  for (let i = 0; i < count; i++) {
+    const comment = {
+      id: nanoid(MAX_ID_LENGTH),
+      text: getRandomItemFrom(array),
+    };
+
+    comments.push(comment);
+  }
+
+  return comments;
+};
+
 module.exports = {
   formatDate,
   generatePastDate,
@@ -57,4 +74,5 @@ module.exports = {
   shuffleArray,
   readContent,
   removeBlankLines,
+  generateCommentsFrom,
 };
