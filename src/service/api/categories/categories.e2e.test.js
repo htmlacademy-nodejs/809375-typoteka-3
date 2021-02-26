@@ -2,6 +2,8 @@
 
 const request = require(`supertest`);
 const express = require(`express`);
+const {StatusCodes} = require(`http-status-codes`);
+
 const {getFixtureContent} = require(`../../../utils/utils`);
 const {categoriesController} = require(`./categories.controller`);
 const {CategoriesService} = require(`./categories.service`);
@@ -22,7 +24,7 @@ describe(`Categories api end-points`, () => {
   test(`should be status 200 on get all categories`, async () => {
     const response = await request(app).get(`/api/categories`);
 
-    expect(response.status).toBe(200);
+    expect(response.status).toBe(StatusCodes.OK);
   });
 
   test(`should have correct response body`, async () => {

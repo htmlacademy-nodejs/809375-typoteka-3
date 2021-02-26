@@ -3,7 +3,7 @@
 const {StatusCodes} = require(`http-status-codes`);
 const {Router} = require(`express`);
 
-module.exports = (searchService) => {
+const searchController = (searchService) => {
   const route = new Router();
 
   route.get(`/`, (req, res) => {
@@ -19,4 +19,8 @@ module.exports = (searchService) => {
   });
 
   return route;
+};
+
+module.exports = {
+  searchController,
 };
