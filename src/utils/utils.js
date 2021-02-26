@@ -1,9 +1,12 @@
 "use strict";
 
 const chalk = require(`chalk`);
-const {MAX_ID_LENGTH} = require(`../constants`);
-const {nanoid} = require(`nanoid`);
 const fs = require(`fs`).promises;
+const fsSync = require(`fs`);
+const path = require(`path`);
+const {nanoid} = require(`nanoid`);
+
+const {MAX_ID_LENGTH} = require(`../constants`);
 
 const getRandomInt = (min, max) => {
   const minimal = Math.ceil(min);
@@ -66,13 +69,18 @@ const generateCommentsFrom = (array, count) => {
   return comments;
 };
 
+const getFixturePath = (fileName) => path.resolve(__dirname, `..`, `..`, `__fixtures__`, fileName);
+
+const getFixtureContent = (fileName) => fsSync.readFileSync(getFixturePath(fileName), `utf-8`).trim();
+
 module.exports = {
   formatDate,
+  generateCommentsFrom,
   generatePastDate,
+  getFixtureContent,
   getRandomInt,
   getRandomItemFrom,
-  shuffleArray,
   readContent,
   removeBlankLines,
-  generateCommentsFrom,
+  shuffleArray,
 };

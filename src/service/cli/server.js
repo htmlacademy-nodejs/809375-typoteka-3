@@ -10,9 +10,7 @@ const PORT = 3001;
 
 module.exports = async (port = PORT) => {
   const app = express();
-
   const apiRoute = await initApiRouter();
-
 
   app.use(express.json());
   app.use(pino({logger}));

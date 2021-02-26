@@ -8,8 +8,10 @@
     "generate-mock-data": "node ./src/service/service.js -g 11",
     "start": "LOGGER_LEVEL=error nodemon ./src/service/service.js --server 3131",
     "start-front-server": "nodemon src/express/app.js",
-    "start::debug": "LOGGER_LEVEL=debug nodemon ./src/service/service.js --server 3131 | ./node_modules/.bin/pino-pretty",
-    "test": "npm run eslint"
+    "start:debug": "LOGGER_LEVEL=debug nodemon ./src/service/service.js --server 3131 | ./node_modules/.bin/pino-pretty",
+    "test": "npm run eslint & npm run jest",
+    "test:rest": "echo 1231",
+    "jest": "jest"
   },
   "repository": {
     "type": "git",
