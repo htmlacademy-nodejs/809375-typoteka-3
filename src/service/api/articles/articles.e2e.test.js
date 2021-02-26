@@ -1,16 +1,14 @@
 "use strict";
 
 const request = require(`supertest`);
-const {createTestServer} = require(`../../../utils/utils`);
 const {StatusCodes} = require(`http-status-codes`);
 
-const {getFixtureContent} = require(`../../../utils/utils`);
-const {articlesController} = require(`./articles.controller`);
 const {ArticlesService} = require(`./articles.service`);
+const {CommentService} = require(`./comment/comment.service`);
+const {articlesController} = require(`./articles.controller`);
+const {getFixtureContent, createTestServer} = require(`../../../utils/utils`);
 
 const getMockData = () => JSON.parse(getFixtureContent(`mockArticles.json`));
-
-// TODO move to create serve
 
 describe(`Articles api end-points`, () => {
   let mockData;
@@ -25,14 +23,14 @@ describe(`Articles api end-points`, () => {
 
   beforeEach(() => {
     mockData = getMockData();
-    app = createTestServer(`/api/articles`, ArticlesService, articlesController, mockData);
+    app = createTestServer(`/api/articles`, articlesController, mockData, ArticlesService, CommentService);
   });
 
   test(`should return all articles with 200 code`, async () => {
     const response = await request(app).get(`/api/articles`);
 
     expect(response.status).toEqual(StatusCodes.OK);
-    expect(response.body).toEqual(mockData);
+    expect(response.body).toStrictEqual(mockData);
   });
 
   test(`should create post with valid post`, async () => {
@@ -69,7 +67,7 @@ describe(`Articles api end-points`, () => {
     const response = await request(app).post(`/api/articles`).send(incorrectNewArticle);
 
     expect(response.status).toEqual(StatusCodes.UNPROCESSABLE_ENTITY);
-    expect(response.body).toEqual(responseWithErrors);
+    expect(response.body).toStrictEqual(responseWithErrors);
   });
 
   test(`should correct update post`, async () => {
@@ -120,13 +118,79 @@ describe(`Articles api end-points`, () => {
       "title": `How to start`,
     };
 
-    expect(response.status).toEqual(200);
-    expect(response.body).toEqual(article);
+    expect(response.status).toEqual(StatusCodes.OK);
+    expect(response.body).toStrictEqual(article);
   });
 
   test(`should send 404 on not exist article`, async () => {
     const response = await request(app).get(`/api/articles/unExistID`);
 
-    expect(response.status).toEqual(404);
+    expect(response.status).toEqual(StatusCodes.NOT_FOUND);
+  });
+
+  test(`should send comments and 200 status on exist article`, async () => {
+    const response = await request(app).get(`/api/articles/4TzG/comments`);
+    const comments = [
+      {
+        "id": `BFtn`,
+        "text": `Давно не пользуюсь стационарными компьютерами. Ноутбуки победили.`,
+      },
+      {
+        "id": `2dXr`,
+        "text": `Мне не нравится ваш стиль. Ощущение, что вы меня поучаете.`,
+      },
+    ];
+
+    expect(response.status).toEqual(StatusCodes.OK);
+    expect(response.body).toStrictEqual(comments);
+  });
+
+  test(`should delete exist comment from article with 200 code and return them`, async () => {
+    const response = await request(app).delete(`/api/articles/4TzG/comments/BFtn`);
+    const comments = [
+      {
+        "id": `BFtn`,
+        "text": `Давно не пользуюсь стационарными компьютерами. Ноутбуки победили.`,
+      },
+    ];
+
+    expect(response.status).toEqual(StatusCodes.OK);
+    expect(response.body).toStrictEqual(comments);
+  });
+
+  test(`should send 404 error on try delete not exist comment`, async () => {
+    const response = await request(app).delete(`/api/articles/4TzG/comments/unExistID`);
+
+    expect(response.status).toEqual(StatusCodes.NOT_FOUND);
+  });
+
+  test(`should create comment with 200 code`, async () => {
+    const newComment = {
+      text: `Some test long text with more then 20 chars`,
+    };
+    const response = await request(app).post(`/api/articles/4TzG/comments`).send(newComment);
+
+    expect(response.status).toEqual(StatusCodes.OK);
+  });
+
+  test(`should send 422 error on invalid comment create`, async () => {
+    const newComment = {
+      text: `To sort text`,
+    };
+    const errorText = {
+      "errors": {
+        "text": {
+          "location": `body`,
+          "msg": `Comment must be at least 20 characters`,
+          "param": `text`,
+          "value": `To sort text`,
+        },
+      },
+    };
+
+    const response = await request(app).post(`/api/articles/4TzG/comments`).send(newComment);
+
+    expect(response.status).toEqual(StatusCodes.UNPROCESSABLE_ENTITY);
+    expect(response.body).toStrictEqual(errorText);
   });
 });

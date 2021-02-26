@@ -63,7 +63,6 @@ const articlesController = (articlesService, commentService) => {
   route.get(`/:articleId/comments`, articleValidator.exist(articlesService), ((req, res) => {
     const {articleId} = req.params;
     const article = articlesService.findByID(articleId);
-    console.log(article);
 
     const comments = commentService.findAll(article);
 

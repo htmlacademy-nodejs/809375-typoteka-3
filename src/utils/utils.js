@@ -74,10 +74,15 @@ const getFixturePath = (fileName) => path.resolve(__dirname, `..`, `..`, `__fixt
 
 const getFixtureContent = (fileName) => fsSync.readFileSync(getFixturePath(fileName), `utf-8`).trim();
 
-const createTestServer = (route, Service, controller, mockData) => {
+const createTestServer = (route, controller, mockData, ArticleService, CommentService) => {
   const app = express();
   app.use(express.json());
-  app.use(route, controller(new Service(mockData)));
+
+  if (CommentService) {
+    app.use(route, controller(new ArticleService(mockData), new CommentService(mockData)));
+  }
+
+  app.use(route, controller(new ArticleService(mockData)));
 
   return app;
 };
