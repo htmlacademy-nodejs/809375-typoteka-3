@@ -4,6 +4,7 @@ const chalk = require(`chalk`);
 const fs = require(`fs`).promises;
 const fsSync = require(`fs`);
 const path = require(`path`);
+const express = require(`express`);
 const {nanoid} = require(`nanoid`);
 
 const {MAX_ID_LENGTH} = require(`../constants`);
@@ -73,7 +74,16 @@ const getFixturePath = (fileName) => path.resolve(__dirname, `..`, `..`, `__fixt
 
 const getFixtureContent = (fileName) => fsSync.readFileSync(getFixturePath(fileName), `utf-8`).trim();
 
+const createTestServer = (route, Service, controller, mockData) => {
+  const app = express();
+  app.use(express.json());
+  app.use(route, controller(new Service(mockData)));
+
+  return app;
+};
+
 module.exports = {
+  createTestServer,
   formatDate,
   generateCommentsFrom,
   generatePastDate,

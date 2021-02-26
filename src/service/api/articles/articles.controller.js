@@ -41,7 +41,7 @@ const articlesController = (articlesService, commentService) => {
       return res.status(StatusCodes.OK).json(offer);
     }
 
-    return res.status(StatusCodes.BAD_REQUEST).json({errors: result.mapped()});
+    return res.status(StatusCodes.UNPROCESSABLE_ENTITY).json({errors: result.mapped()});
   }));
 
   route.delete(`/:articleId`, articleValidator.exist(articlesService), ((req, res) => {
@@ -63,6 +63,7 @@ const articlesController = (articlesService, commentService) => {
   route.get(`/:articleId/comments`, articleValidator.exist(articlesService), ((req, res) => {
     const {articleId} = req.params;
     const article = articlesService.findByID(articleId);
+    console.log(article);
 
     const comments = commentService.findAll(article);
 

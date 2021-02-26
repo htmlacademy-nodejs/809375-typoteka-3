@@ -9,9 +9,9 @@
     "start": "LOGGER_LEVEL=error nodemon ./src/service/service.js --server 3131",
     "start-front-server": "nodemon src/express/app.js",
     "start:debug": "LOGGER_LEVEL=debug nodemon ./src/service/service.js --server 3131 | ./node_modules/.bin/pino-pretty",
-    "test": "npm run eslint & npm run jest",
-    "test:rest": "echo 1231",
-    "jest": "jest"
+    "test": "npm run eslint & npm run test:all",
+    "test:all": "jest",
+    "test:rest": "jest .e2e.test.js"
   },
   "repository": {
     "type": "git",
