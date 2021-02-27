@@ -9,7 +9,7 @@ const categoriesController = (categoriesService) => {
   route.get(`/`, (req, res) => {
     const categories = categoriesService.findAll();
 
-    res.status(StatusCodes.OK).json(categories);
+    return res.status(StatusCodes.OK).json(categories);
   });
 
   return route;

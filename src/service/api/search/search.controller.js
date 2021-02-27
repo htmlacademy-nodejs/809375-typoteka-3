@@ -3,7 +3,7 @@
 const {StatusCodes} = require(`http-status-codes`);
 const {Router} = require(`express`);
 
-module.exports = (searchService) => {
+const searchController = (searchService) => {
   const route = new Router();
 
   route.get(`/`, (req, res) => {
@@ -14,9 +14,13 @@ module.exports = (searchService) => {
     }
 
     const searchResults = searchService.findAll(query);
-    console.log(searchResults);
+
     return res.status(StatusCodes.OK).json(searchResults);
   });
 
   return route;
+};
+
+module.exports = {
+  searchController,
 };

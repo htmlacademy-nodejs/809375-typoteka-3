@@ -41,7 +41,7 @@ const articlesController = (articlesService, commentService) => {
       return res.status(StatusCodes.OK).json(offer);
     }
 
-    return res.status(StatusCodes.BAD_REQUEST).json({errors: result.mapped()});
+    return res.status(StatusCodes.UNPROCESSABLE_ENTITY).json({errors: result.mapped()});
   }));
 
   route.delete(`/:articleId`, articleValidator.exist(articlesService), ((req, res) => {
@@ -49,7 +49,7 @@ const articlesController = (articlesService, commentService) => {
 
     const deletedArticle = articlesService.delete(articleId);
 
-    res.status(StatusCodes.OK).json(deletedArticle);
+    return res.status(StatusCodes.OK).json(deletedArticle);
   }));
 
   route.get(`/:articleId`, articleValidator.exist(articlesService), ((req, res) => {
@@ -57,7 +57,7 @@ const articlesController = (articlesService, commentService) => {
 
     const article = articlesService.findByID(articleId);
 
-    res.status(StatusCodes.OK).json(article);
+    return res.status(StatusCodes.OK).json(article);
   }));
 
   route.get(`/:articleId/comments`, articleValidator.exist(articlesService), ((req, res) => {
@@ -66,7 +66,7 @@ const articlesController = (articlesService, commentService) => {
 
     const comments = commentService.findAll(article);
 
-    res.status(StatusCodes.OK).json(comments);
+    return res.status(StatusCodes.OK).json(comments);
   }));
 
   route.delete(`/:articleId/comments/:commentId`, articleValidator.exist(articlesService), commentValidators.exist(commentService, articlesService), (req, res) => {
@@ -76,7 +76,7 @@ const articlesController = (articlesService, commentService) => {
 
     const deletedComment = commentService.delete(article, commentId);
 
-    res.status(StatusCodes.OK).send(deletedComment);
+    return res.status(StatusCodes.OK).send(deletedComment);
   });
 
   route.post(`/:articleId/comments/`, articleValidator.exist(articlesService), commentValidators.create, (req, res) => {

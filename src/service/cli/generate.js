@@ -13,7 +13,7 @@ const {
   shuffleArray,
   readContent,
   generateCommentsFrom,
-} = require(`../../utils`);
+} = require(`../../utils/utils`);
 
 const {
   MAX_ID_LENGTH,
