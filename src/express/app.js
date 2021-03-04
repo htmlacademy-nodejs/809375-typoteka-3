@@ -3,8 +3,9 @@
 const express = require(`express`);
 const path = require(`path`);
 
-const rootRouter = require(`./routes/root`);
-const myRouter = require(`./routes/my`);
+const {rootController} = require(`./entities/root/root.controller`);
+const {myController} = require(`./entities/my/my.controller`);
+const {api} = require(`./providers/api.provider`);
 const articlesRouter = require(`./routes/articles`);
 
 const app = express();
@@ -14,8 +15,8 @@ app.set(`view engine`, `pug`);
 
 const PORT = 3000;
 
-app.use(`/`, rootRouter);
-app.use(`/my`, myRouter);
+app.use(`/`, rootController(api));
+app.use(`/my`, myController(api));
 app.use(`/articles`, articlesRouter);
 
 app.listen(PORT, () => {
