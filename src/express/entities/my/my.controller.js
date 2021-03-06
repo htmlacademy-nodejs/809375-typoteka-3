@@ -13,6 +13,7 @@ const myController = (api) => {
       articles,
     });
   });
+
   route.get(`/comments`, async (req, res) => {
     const articles = await api.getArticles();
     const comments = articles.slice(0, 3).reduce((acc, article) => {
@@ -29,6 +30,7 @@ const myController = (api) => {
       comments,
     });
   });
+
   route.get(`/categories`, (req, res) => res.render(`my/all-categories`));
 
   return route;

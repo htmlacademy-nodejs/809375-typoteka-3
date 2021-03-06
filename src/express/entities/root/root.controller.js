@@ -19,7 +19,23 @@ const rootController = (api) => {
   }));
   route.get(`/login`, (req, res) => res.render(`root/login`));
   route.get(`/register`, (req, res) => res.render(`root/sign-up`));
-  route.get(`/search`, (req, res) => res.render(`root/search`, {classNames: `wrapper-color`}));
+
+  route.get(`/search`, async (req, res) => {
+    const {query} = req.query;
+
+    try {
+      const articles = await api.search(query);
+
+      res.render(`root/search`, {
+        classNames: `wrapper-color`,
+        articles,
+      });
+    } catch (err) {
+      res.render(`root/search`, {
+        classNames: `wrapper-color`,
+      });
+    }
+  });
 
   return route;
 };
