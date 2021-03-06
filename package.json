@@ -6,9 +6,9 @@
   "scripts": {
     "eslint": "eslint --ext .js src/",
     "generate-mock-data": "node ./src/service/service.js -g 11",
-    "start": "LOGGER_LEVEL=error nodemon ./src/service/service.js --server 3131",
-    "start-front-server": "nodemon src/express/app.js",
-    "start:debug": "LOGGER_LEVEL=debug nodemon ./src/service/service.js --server 3131 | ./node_modules/.bin/pino-pretty",
+    "start": "cross-env NODE_ENV=production nodemon -r dotenv/config ./src/service/service.js --server",
+    "start:express": "nodemon -r dotenv/config src/express/app.js",
+    "start:debug": "cross-env NODE_ENV=development nodemon -r dotenv/config ./src/service/service.js --server | ./node_modules/.bin/pino-pretty",
     "test": "npm run eslint & npm run test:all",
     "test:all": "jest",
     "test:rest": "jest .e2e.test.js"
@@ -28,6 +28,7 @@
   },
   "homepage": "https://github.com/Shramkoweb/809375-typoteka-3#readme",
   "devDependencies": {
+    "dotenv": "8.2.0",
     "eslint": "7.18.0",
     "eslint-config-htmlacademy": "0.6.0",
     "husky": "4.3.8",
@@ -41,6 +42,7 @@
     "axios": "0.21.1",
     "chalk": "4.1.0",
     "commander": "7.0.0",
+    "cross-env": "7.0.3",
     "express": "4.17.1",
     "express-pino-logger": "6.0.0",
     "express-validator": "6.9.2",
