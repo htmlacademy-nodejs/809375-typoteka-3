@@ -1,6 +1,9 @@
 "use strict";
 const axios = require(`axios`);
 
+const port = process.env.API_PORT || 3001;
+const defaultUrl = `http://localhost:${port}/api/`;
+
 class ApiProvider {
   constructor(client, baseURL) {
     this.client = client.create({
@@ -10,7 +13,6 @@ class ApiProvider {
 
   async getArticles() {
     const response = await this.client.get(`/articles`);
-    console.log(response);
 
     return response.data;
   }
@@ -20,8 +22,27 @@ class ApiProvider {
 
     return response.data;
   }
+
+  async search(query) {
+    const response = await this.client.get(`/search`, {params: {query}});
+
+    return response.data;
+  }
+
+  async getCategories() {
+    const response = await this.client.get(`/categories`);
+
+    return response.data;
+  }
+
+  async createOffer(data) {
+    return await this.client.post(`/articles`, {
+      method: `POST`,
+      data,
+    });
+  }
 }
 
 module.exports = {
-  api: new ApiProvider(axios, `http://localhost:3131/api`),
+  api: new ApiProvider(axios, defaultUrl),
 };
