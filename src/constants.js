@@ -2,8 +2,8 @@
 
 const path = require(`path`);
 
-const API_DEFAULT_PORT = 3001;
-const FRONT_END_DEFAULT_PORT = 3000;
+const API_DEFAULT_PORT = process.env.API_PORT || 3001;
+const EXPRESS_DEFAULT_PORT = process.env.EXPRESS_PORT || 3000;
 const MAX_COMMENTS_AMOUNT = 5;
 const MAX_ID_LENGTH = 4;
 
@@ -13,9 +13,15 @@ const ProjectPath = {
   MOCK_FILE_PATH: path.resolve(__dirname, `../mocks.json`),
 };
 
+const Env = {
+  DEVELOPMENT: `development`,
+  PRODUCTION: `production`,
+};
+
 module.exports = {
   API_DEFAULT_PORT,
-  FRONT_END_DEFAULT_PORT,
+  EXPRESS_DEFAULT_PORT,
+  Env,
   MAX_COMMENTS_AMOUNT,
   MAX_ID_LENGTH,
   ProjectPath,
