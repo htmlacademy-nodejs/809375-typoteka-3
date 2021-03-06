@@ -35,11 +35,10 @@ class ApiProvider {
     return response.data;
   }
 
-  async createOffer(data) {
-    return await this.client.post(`/articles`, {
-      method: `POST`,
-      data,
-    });
+  async createArticle(data) {
+    const response = await this.client.post(`/articles`, {...data});
+
+    return response.data;
   }
 }
 

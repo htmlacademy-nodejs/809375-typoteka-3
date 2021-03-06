@@ -11,6 +11,7 @@ const ProjectPath = {
   ROOT_FOLDER: path.resolve(__dirname, `..`),
   DATA_FOLDER: path.resolve(__dirname, `../data`),
   MOCK_FILE_PATH: path.resolve(__dirname, `../mocks.json`),
+  UPLOAD_DIR_PATH: path.resolve(__dirname, `./express/uploads`)
 };
 
 const Env = {
