@@ -1,8 +1,7 @@
 "use strict";
 const axios = require(`axios`);
 
-const port = process.env.API_PORT || 3001;
-const defaultUrl = `http://localhost:${port}/api/`;
+const backendURL = process.env.BACKEND_URL;
 
 class ApiProvider {
   constructor(client, baseURL) {
@@ -43,5 +42,5 @@ class ApiProvider {
 }
 
 module.exports = {
-  api: new ApiProvider(axios, defaultUrl),
+  api: new ApiProvider(axios, backendURL),
 };
