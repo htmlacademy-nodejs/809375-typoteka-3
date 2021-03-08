@@ -11,8 +11,7 @@ Thumbs.db
 *.log*
 node_modules/
 .env
-src/express/uploads
-
+uploads/
 # Папка с собранными файлами проекта
 build/
 mocks.json
