@@ -1,12 +1,22 @@
 extends ../layout
 
 block content
+  - const isEmpty = articles && articles.length === 0;
+
   main
     section.search-page
-      .search-page__wrapper
+      div(class=isEmpty ? 'search-page__wrapper search-page__wrapper--empty' : 'search-page__wrapper')
         h1 Поиск
         .search.search-page__form
-          form(action='#' method='get')
+          form(action='/search' method='get')
             label
-              input(type='text' name='search' placeholder='Что ищем?')
+              input(type='text' name='query' placeholder='Что ищем?' required)
             button.search__button.button.button--transparent(type='submit') Найти
+          if (articles && articles.length)
+            each result in articles
+              .search__result
+                time.search__date(datetime= result.createdDate)= new Date(result.createdDate).toLocaleDateString()
+                a.search__link= result.title
+          if isEmpty
+            p.search-page__empty Ничего не нашлось
+

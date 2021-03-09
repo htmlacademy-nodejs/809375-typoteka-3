@@ -4,11 +4,10 @@ const express = require(`express`);
 const pino = require(`express-pino-logger`);
 
 const initApiRouter = require(`../api`);
+const {API_DEFAULT_PORT} = require(`../../constants`);
 const {logger} = require(`../logger`);
 
-const PORT = 3001;
-
-module.exports = async (port = PORT) => {
+module.exports = async (port = API_DEFAULT_PORT) => {
   const app = express();
   const apiRoute = await initApiRouter();
 
@@ -21,6 +20,6 @@ module.exports = async (port = PORT) => {
       return logger.error(`SERVER: Server creation error ${err}`);
     }
 
-    return logger.debug(`Waiting for connections on ${port}`);
+    return console.info(`Waiting for connections on ${port}`);
   });
 };

@@ -5,4 +5,6 @@ env:
 extends: 'htmlacademy/node'
 parserOptions:
   ecmaVersion: 2018
+ignorePatterns:
+  - '**/express/public/**/*.js'
 rules: { }
