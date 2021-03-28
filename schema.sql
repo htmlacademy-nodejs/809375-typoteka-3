@@ -1,5 +1,3 @@
-
-
 DROP TABLE IF EXISTS articles_categories;
 DROP TABLE IF EXISTS categories;
 DROP TABLE IF EXISTS comments;
@@ -13,7 +11,7 @@ CREATE TABLE users
     password_hash VARCHAR(255) NOT NULL,
     first_name    VARCHAR(50)  NOT NULL,
     last_name     VARCHAR(50)  NOT NULL,
-    is_author     BOOLEAN      NOT NULL,
+    is_author     BOOLEAN      NOT NULL UNIQUE,
     avatar        VARCHAR(255)
 );
 
