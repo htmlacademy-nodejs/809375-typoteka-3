@@ -1,6 +1,6 @@
 -- Get a list of all categories
 -- (identifier, category name)
-SELECT *
+SELECT id, label
 FROM categories;
 
 -- Get a list of categories for which at least one publication has been created
@@ -15,9 +15,9 @@ GROUP BY id, label;
 -- (identifier, category name, number of publications in the category)
 SELECT id,
        label,
-       count(id) as number_of_publication
+       count(ac.category_id) as number_of_publication
 FROM categories
-         INNER JOIN articles_categories ac on categories.id = ac.category_id
+         LEFT JOIN articles_categories ac on categories.id = ac.category_id
 GROUP BY id
 ORDER BY number_of_publication DESC;
 
