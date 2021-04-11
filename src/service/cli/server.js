@@ -6,8 +6,7 @@ const pino = require(`express-pino-logger`);
 const initApiRouter = require(`../api`);
 const {API_DEFAULT_PORT} = require(`../../constants`);
 const {logger} = require(`../logger`);
-const {initDB} = require(`src/service/lib/db`);
-
+const {initDB} = require(`../lib/db`);
 
 module.exports = async (port = API_DEFAULT_PORT) => {
   try {
