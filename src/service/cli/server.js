@@ -6,7 +6,7 @@ const pino = require(`express-pino-logger`);
 const initApiRouter = require(`../api`);
 const {API_DEFAULT_PORT} = require(`../../constants`);
 const {logger} = require(`../logger`);
-const {initDB} = require(`../lib/sequelize`);
+const {initDB} = require(`src/service/lib/db`);
 
 
 module.exports = async (port = API_DEFAULT_PORT) => {

@@ -14,7 +14,7 @@ const initDB = () => {
   return new Sequelize(DB_NAME, DB_USER, DB_PASSWORD, {
     dialect: `postgres`,
     host: DB_HOST,
-    port: DB_PORT,
+    port: parseInt(DB_PORT, 10) || 5432, // default postgres port
     pool: {
       max: 5,
       min: 0,
