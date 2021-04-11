@@ -5,9 +5,19 @@
 
 ---
 
-## BD Schema
+## DB Schema
 
 ![aaasda](./typoteka.png)
+
+## DB environments
+
+```markdown
+DB_HOST — host
+DB_USER — username
+DB_PORT= database port
+DB_NAME= database name
+DB_PASSWORD= database password
+```
 
 ## Requirements
 
