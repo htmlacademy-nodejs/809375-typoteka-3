@@ -40,6 +40,7 @@ const define = (sequelize) => {
     tableName: `articles`,
   });
 
+  return Article;
 };
 
 module.exports = define;

@@ -3,7 +3,8 @@
 const {Model, DataTypes} = require(`sequelize`);
 
 const define = (sequelize) => {
-  class User extends Model {}
+  class User extends Model {
+  }
 
   User.init({
     id: {
@@ -44,6 +45,5 @@ const define = (sequelize) => {
 
   return User;
 };
-
 
 module.exports = define;

@@ -24,9 +24,7 @@ const define = (sequelize) => {
     tableName: `categories`,
   });
 
-
   return Category;
 };
-
 
 module.exports = define;
