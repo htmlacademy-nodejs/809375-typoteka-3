@@ -6,8 +6,8 @@ const {Router} = require(`express`);
 const categoriesController = (categoriesService) => {
   const route = new Router();
 
-  route.get(`/`, (req, res) => {
-    const categories = categoriesService.findAll();
+  route.get(`/`, async (req, res) => {
+    const categories = await categoriesService.findAll();
 
     return res.status(StatusCodes.OK).json(categories);
   });
