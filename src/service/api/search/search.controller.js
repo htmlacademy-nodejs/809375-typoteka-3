@@ -6,14 +6,15 @@ const {Router} = require(`express`);
 const searchController = (searchService) => {
   const route = new Router();
 
-  route.get(`/`, (req, res) => {
+  route.get(`/`, async (req, res) => {
     const {query = ``} = req.query;
+    console.log(query);
 
     if (!query) {
       return res.status(StatusCodes.BAD_REQUEST).json([]);
     }
 
-    const searchResults = searchService.findAll(query);
+    const searchResults = await searchService.findAll(query);
 
     return res.status(StatusCodes.OK).json(searchResults);
   });
