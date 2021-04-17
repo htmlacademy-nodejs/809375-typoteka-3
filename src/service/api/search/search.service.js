@@ -17,7 +17,7 @@ class SearchService {
       include: [Alias.CATEGORIES],
     });
 
-    return articles;
+    return articles.map((article) => article.get());
   }
 }
 
