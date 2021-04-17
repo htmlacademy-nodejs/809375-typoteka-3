@@ -16,7 +16,6 @@ const define = (sequelize) => {
     title: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: true,
       validate: {
         len: [30, 250],
       },

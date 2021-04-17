@@ -4,7 +4,7 @@ const commander = require(`commander`);
 const chalk = require(`chalk`);
 
 const packageJsonFile = require(`../../package.json`);
-const generateOffers = require(`./cli/generate`);
+const generateOffers = require(`./cli/fill-db`);
 const serverCLI = require(`./cli/server`);
 
 const MAX_PUBLICATION_AMOUNT = 1000;
@@ -35,9 +35,9 @@ const handleGenerateAction = (value) => {
 
 commander
   .version(packageJsonFile.version, `-v, --version`)
-  .option(`-g, --generate [count]`, `generates mocks.json files`)
+  .option(`-f, --fillDb [count]`, `fill DB`)
   .option(`-s, --server [port]`, `create server on specific port`)
-  .action(({generate, server}) => {
+  .action(({fillDb, server}) => {
     if (process.argv.length === 2) {
       commander.help();
     }
@@ -46,8 +46,8 @@ commander
       handleServerAction(server);
     }
 
-    if (generate) {
-      handleGenerateAction(generate);
+    if (fillDb) {
+      handleGenerateAction(fillDb);
     }
   })
   .parse(process.argv);

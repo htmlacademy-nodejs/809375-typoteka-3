@@ -5,9 +5,6 @@ const fs = require(`fs`).promises;
 const fsSync = require(`fs`);
 const path = require(`path`);
 const express = require(`express`);
-const {nanoid} = require(`nanoid`);
-
-const {MAX_ID_LENGTH} = require(`../constants`);
 
 const getRandomInt = (min, max) => {
   const minimal = Math.ceil(min);
@@ -55,12 +52,12 @@ const readContent = async (filePath) => {
 
 const removeBlankLines = (string) => string.trim().split(`\n`);
 
-const generateCommentsFrom = (array, count) => {
+const generateCommentsFrom = (array, users, count) => {
   const comments = [];
 
   for (let i = 0; i < count; i++) {
     const comment = {
-      id: nanoid(MAX_ID_LENGTH),
+      [`user_id`]: getRandomItemFrom(users).id,
       text: getRandomItemFrom(array),
     };
 

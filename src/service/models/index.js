@@ -4,6 +4,7 @@ const defineUser = require(`./user`);
 const defineCategory = require(`./category`);
 const defineComment = require(`./comment`);
 const defineArticle = require(`./article`);
+const defineArticleCategory = require(`./article-category`);
 const Alias = require(`./alias`);
 
 const define = (sequelize) => {
@@ -11,28 +12,29 @@ const define = (sequelize) => {
   const Category = defineCategory(sequelize);
   const Comment = defineComment(sequelize);
   const User = defineUser(sequelize);
+  const ArticleCategory = defineArticleCategory(sequelize);
 
   Article.hasMany(Comment, {
     as: Alias.COMMENTS,
     foreignKey: `article_id`,
   });
 
+  Article.belongsTo(User, {
+    foreignKey: `user_id`,
+  });
 
-  // TODO think about 'super many-to-many'
-  // https://sequelize.org/master/manual/advanced-many-to-many.html
   Article.belongsToMany(Category, {
-    through: `articles_categories`,
-    as: Alias.CATEGORIES,
+    through: ArticleCategory,
     foreignKey: `article_id`,
-    timestamps: false,
-    paranoid: false,
+    as: Alias.CATEGORIES,
   });
 
   Category.belongsToMany(Article, {
-    through: `articles_categories`,
-    as: Alias.ARTICLES,
+    through: ArticleCategory,
     foreignKey: `category_id`,
+    as: Alias.ARTICLES,
   });
+
 
   Comment.belongsTo(Article, {
     as: Alias.COMMENTS,
@@ -49,7 +51,7 @@ const define = (sequelize) => {
     foreignKey: `user_id`,
   });
 
-  return {Article, Category, Comment, User};
+  return {Article, Category, Comment, User, ArticleCategory};
 };
 
 module.exports = define;

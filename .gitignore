@@ -14,5 +14,3 @@ node_modules/
 uploads/
 # Папка с собранными файлами проекта
 build/
-mocks.json
-
