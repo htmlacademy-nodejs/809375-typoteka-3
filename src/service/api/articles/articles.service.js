@@ -2,53 +2,42 @@
 
 const {nanoid} = require(`nanoid`);
 
-const {MAX_ID_LENGTH} = require(`../../../constants`);
+const Alias = require(`../../models/alias`);
 
 class ArticlesService {
-  constructor(offers) {
-    this._articles = offers;
+  constructor(db) {
+    this._Article = db.models.Article;
   }
 
-  _findIndexByID(id) {
-    return this._articles.findIndex((offer) => offer.id === id);
+  async create(article) {
+    const newArticle = await this._Article.create(article);
+    await newArticle.addCategories(article.categories);
+
+    return newArticle.get();
   }
 
-  create(offer) {
-    const article = {
-      id: nanoid(MAX_ID_LENGTH),
-      comments: [],
-      ...offer,
-    };
-
-    this._articles.push(article);
-
-    return article;
+  async delete(id) {
+    return await this._Article.destroy({
+      where: {id},
+    });
   }
 
-  findByID(id) {
-    const index = this._findIndexByID(id);
-
-    if (index === -1) {
-      return null;
-    }
-
-    return this._articles[index];
+  async update(id, newArticle) {
+    return await this._Article.update(newArticle, {
+      where: {id},
+    });
   }
 
-  delete(id) {
-    return this._articles.splice(this._findIndexByID(id), 1);
+  async findByID(id) {
+    return this._Article.findByPk(id, {
+      include: [Alias.CATEGORIES, Alias.COMMENTS],
+    });
   }
 
-  update(id, offer) {
-    const index = this._findIndexByID(id);
-
-    this._articles[index] = {...this._articles[index], ...offer};
-
-    return this._articles[index];
-  }
-
-  findAll() {
-    return this._articles || [];
+  async findAll() {
+    return await this._Article.findAll({
+      include: [Alias.CATEGORIES, Alias.COMMENTS],
+    });
   }
 }
 

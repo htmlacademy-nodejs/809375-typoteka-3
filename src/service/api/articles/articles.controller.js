@@ -10,18 +10,18 @@ const {commentValidators} = require(`./comment`);
 const articlesController = (articlesService, commentService) => {
   const route = new Router();
 
-  route.get(`/`, (req, res) => {
-    const offers = articlesService.findAll();
+  route.get(`/`, async (req, res) => {
+    const offers = await articlesService.findAll();
 
     return res.status(StatusCodes.OK).json(offers);
   });
 
-  route.post(`/`, articleValidator.create, ((req, res) => {
+  route.post(`/`, articleValidator.create, (async (req, res) => {
     const result = validationResult(req);
     const {errors} = result;
 
     if (errors.length === 0) {
-      const article = articlesService.create(req.body);
+      const article = await articlesService.create(req.body);
 
       return res.status(StatusCodes.OK).json(article);
     }
@@ -29,14 +29,14 @@ const articlesController = (articlesService, commentService) => {
     return res.status(StatusCodes.UNPROCESSABLE_ENTITY).json({errors: result.mapped()});
   }));
 
-  route.put(`/:articleId`, articleValidator.create, articleValidator.exist(articlesService), ((req, res) => {
+  route.put(`/:articleId`, articleValidator.create, articleValidator.exist(articlesService), (async (req, res) => {
     const result = validationResult(req);
     const {errors} = result;
 
     const {articleId} = req.params;
 
     if (errors.length === 0) {
-      const offer = articlesService.update(articleId, req.body);
+      const offer = await articlesService.update(articleId, req.body);
 
       return res.status(StatusCodes.OK).json(offer);
     }
@@ -44,51 +44,50 @@ const articlesController = (articlesService, commentService) => {
     return res.status(StatusCodes.UNPROCESSABLE_ENTITY).json({errors: result.mapped()});
   }));
 
-  route.delete(`/:articleId`, articleValidator.exist(articlesService), ((req, res) => {
+  route.delete(`/:articleId`, articleValidator.exist(articlesService), (async (req, res) => {
     const {articleId} = req.params;
 
-    const deletedArticle = articlesService.delete(articleId);
+    const deletedArticle = await articlesService.delete(articleId);
 
     return res.status(StatusCodes.OK).json(deletedArticle);
   }));
 
-  route.get(`/:articleId`, articleValidator.exist(articlesService), ((req, res) => {
+  route.get(`/:articleId`, articleValidator.exist(articlesService), (async (req, res) => {
     const {articleId} = req.params;
 
-    const article = articlesService.findByID(articleId);
+    const article = await articlesService.findByID(articleId);
 
     return res.status(StatusCodes.OK).json(article);
   }));
 
-  route.get(`/:articleId/comments`, articleValidator.exist(articlesService), ((req, res) => {
+  route.get(`/:articleId/comments`, articleValidator.exist(articlesService), (async (req, res) => {
     const {articleId} = req.params;
-    const article = articlesService.findByID(articleId);
 
-    const comments = commentService.findAll(article);
+    const article = await articlesService.findByID(articleId);
+
+    const comments = await commentService.findAll(article.id);
 
     return res.status(StatusCodes.OK).json(comments);
   }));
 
-  route.delete(`/:articleId/comments/:commentId`, articleValidator.exist(articlesService), commentValidators.exist(commentService, articlesService), (req, res) => {
-    const {articleId, commentId} = req.params;
+  route.delete(`/:articleId/comments/:commentId`, articleValidator.exist(articlesService), commentValidators.exist(commentService, articlesService), async (req, res) => {
+    const {commentId} = req.params;
 
-    const article = articlesService.findByID(articleId);
-
-    const deletedComment = commentService.delete(article, commentId);
+    const deletedComment = await commentService.delete(commentId);
 
     return res.status(StatusCodes.OK).send(deletedComment);
   });
 
-  route.post(`/:articleId/comments/`, articleValidator.exist(articlesService), commentValidators.create, (req, res) => {
+  route.post(`/:articleId/comments/`, articleValidator.exist(articlesService), commentValidators.create, async (req, res) => {
     const result = validationResult(req);
 
     const {articleId} = req.params;
     const {errors} = result;
 
-    const article = articlesService.findByID(articleId);
+    const article = await articlesService.findByID(articleId);
 
     if (errors.length === 0) {
-      const comment = commentService.create(article, req.body);
+      const comment = await commentService.create(article, req.body);
 
       return res.status(StatusCodes.OK).json(comment);
     }

@@ -3,16 +3,18 @@
 const {checkSchema} = require(`express-validator`);
 const {StatusCodes, ReasonPhrases} = require(`http-status-codes`);
 
-exports.exist = (commentService, articleService) => (req, res, next) => {
+exports.exist = (commentService, articleService) => async (req, res, next) => {
   const {articleId, commentId} = req.params;
 
-  const article = articleService.findByID(articleId);
+  console.log('@@@bbbb', {articleId, commentId});
+
+  const article = await articleService.findByID(articleId);
 
   if (!article) {
     res.status(StatusCodes.NOT_FOUND).json(ReasonPhrases.NOT_FOUND);
   }
 
-  const comment = commentService.findByID(article, commentId);
+  const comment = await commentService.findByID(commentId);
 
   if (comment) {
     res.locals.comment = comment;
@@ -30,7 +32,7 @@ exports.create = checkSchema({
     isLength: {
       errorMessage: `Comment must be at least 20 characters`,
       options: {
-        min: 20
+        min: 20,
       },
     },
   },
