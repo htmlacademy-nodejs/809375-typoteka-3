@@ -17,6 +17,9 @@ const define = (sequelize) => {
     foreignKey: `article_id`,
   });
 
+
+  // TODO think about 'super many-to-many'
+  // https://sequelize.org/master/manual/advanced-many-to-many.html
   Article.belongsToMany(Category, {
     through: `articles_categories`,
     as: Alias.CATEGORIES,
@@ -45,7 +48,6 @@ const define = (sequelize) => {
     as: Alias.ARTICLES,
     foreignKey: `user_id`,
   });
-
 
   return {Article, Category, Comment, User};
 };
