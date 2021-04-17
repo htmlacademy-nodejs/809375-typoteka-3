@@ -6,8 +6,18 @@ const pino = require(`express-pino-logger`);
 const initApiRouter = require(`../api`);
 const {API_DEFAULT_PORT} = require(`../../constants`);
 const {logger} = require(`../logger`);
+const db = require(`../lib/db`);
 
 module.exports = async (port = API_DEFAULT_PORT) => {
+  try {
+    logger.info(`Connecting to DB...`);
+    await db.authenticate();
+    logger.info(`Connection with DB is established.`);
+  } catch (error) {
+    logger.error(`Couldn't connect to DB: ${error}`);
+    process.exitCode(1);
+  }
+
   const app = express();
   const apiRoute = await initApiRouter();
 
