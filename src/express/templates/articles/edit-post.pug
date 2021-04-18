@@ -16,7 +16,7 @@ block content
                 .new-publication__date-form-division
                   .new-publication__date-block
                     label(for='new-publication-date' aria-label='Календарь')
-                    input#new-publication-date(type='text' name='date' placeholder= article.createdDate)
+                    input#new-publication-date(type='text' name='date' placeholder= article.createdAt)
               button.new-publication__button.button.button--colored(type='submit') Опубликовать
             a.popup__button.button.button--popup-close(aria-label='Закрыть окно')
               | Закрыть
@@ -35,7 +35,7 @@ block content
                       | Обзор
                   button.button.button--transparent Удалить
                 .new-publication__category-wrapper
-                  each category, index in article.category
+                  each category, index in article.categories
                     .new-publication__checkbox
                       input#checkbox-auto(type='checkbox' name= 'category-' + index)
                       label(for='checkbox-auto')= category

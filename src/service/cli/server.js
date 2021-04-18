@@ -15,7 +15,7 @@ module.exports = async (port = API_DEFAULT_PORT) => {
     logger.info(`Connection with DB is established.`);
   } catch (error) {
     logger.error(`Couldn't connect to DB: ${error}`);
-    process.exitCode(1);
+    process.exit(1);
   }
 
   const app = express();

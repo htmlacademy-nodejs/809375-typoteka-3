@@ -88,7 +88,7 @@ const createMocks = async (amount) => {
       await db.sync({force: true});
     } catch (err) {
       logger.error(`DB init error: ${err}`);
-      process.exitCode(1);
+      process.exit(1);
     }
 
     const [categoryModels, userModels] = await Promise.all([
