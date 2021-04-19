@@ -1,12 +1,21 @@
 "use strict";
 
-const {Model} = require(`sequelize`);
+const {Model, DataTypes} = require(`sequelize`);
 
 const define = (sequelize) => {
   class ArticleCategory extends Model {
   }
 
-  ArticleCategory.init({}, {
+  ArticleCategory.init({
+    "article_id": {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    "category_id": {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+  }, {
     sequelize,
     modelName: `ArticleCategory`,
     tableName: `articles_categories`,
