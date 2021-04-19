@@ -29,6 +29,7 @@ const define = (sequelize) => {
     },
     fullText: {
       type: DataTypes.STRING(1000),
+      field: `full_text`,
     },
     photo: {
       type: DataTypes.STRING,

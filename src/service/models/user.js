@@ -21,18 +21,23 @@ const define = (sequelize) => {
     passwordHash: {
       type: DataTypes.STRING,
       allowNull: false,
+      field: `password_hash`,
     },
     firstName: {
       type: DataTypes.STRING,
       allowNull: false,
+      field: `first_name`,
     },
     lastName: {
       type: DataTypes.STRING,
       allowNull: false,
+      field: `last_name`,
+
     },
     isAuthor: {
       type: DataTypes.BOOLEAN,
       allowNull: false,
+      field: `is_author`,
     },
     avatar: {
       type: DataTypes.STRING,
