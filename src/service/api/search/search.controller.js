@@ -8,7 +8,6 @@ const searchController = (searchService) => {
 
   route.get(`/`, async (req, res) => {
     const {query = ``} = req.query;
-    console.log(query);
 
     if (!query) {
       return res.status(StatusCodes.BAD_REQUEST).json([]);

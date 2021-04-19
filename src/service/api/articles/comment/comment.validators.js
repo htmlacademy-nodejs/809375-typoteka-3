@@ -6,8 +6,6 @@ const {StatusCodes, ReasonPhrases} = require(`http-status-codes`);
 exports.exist = (commentService, articleService) => async (req, res, next) => {
   const {articleId, commentId} = req.params;
 
-  console.log('@@@bbbb', {articleId, commentId});
-
   const article = await articleService.findByID(articleId);
 
   if (!article) {
