@@ -7,13 +7,15 @@ const define = (sequelize) => {
   }
 
   ArticleCategory.init({
-    "article_id": {
+    articleID: {
       type: DataTypes.INTEGER,
       allowNull: false,
+      field: `article_id`,
     },
-    "category_id": {
+    categoryID: {
       type: DataTypes.INTEGER,
       allowNull: false,
+      field: `category_id`,
     },
   }, {
     sequelize,

@@ -25,13 +25,13 @@ const define = (sequelize) => {
 
   Article.belongsToMany(Category, {
     through: ArticleCategory,
-    foreignKey: `article_id`,
+    foreignKey: `articleID`,
     as: Alias.CATEGORIES,
   });
 
   Category.belongsToMany(Article, {
     through: ArticleCategory,
-    foreignKey: `category_id`,
+    foreignKey: `categoryID`,
     as: Alias.ARTICLES,
   });
 
