@@ -7,4 +7,6 @@ parserOptions:
   ecmaVersion: 2018
 ignorePatterns:
   - '**/express/public/**/*.js'
-rules: { }
+rules: {
+  new-cap: off
+}

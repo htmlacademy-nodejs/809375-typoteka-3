@@ -60,9 +60,10 @@ exports.create = checkSchema({
   },
 });
 
-exports.exist = (articlesService) => (req, res, next) => {
+exports.exist = (articlesService) => async (req, res, next) => {
   const {articleId} = req.params;
-  const article = articlesService.findByID(articleId);
+
+  const article = await articlesService.findByID(articleId);
 
   if (article) {
     next();

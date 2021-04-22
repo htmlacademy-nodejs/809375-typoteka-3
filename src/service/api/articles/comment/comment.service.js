@@ -1,39 +1,36 @@
 "use strict";
 
-const {nanoid} = require(`nanoid`);
-
-const {MAX_ID_LENGTH} = require(`../../../../constants`);
-
-// TODO think about bind all articles in initialization CommentService
 class CommentService {
-  _findIndexByID(article, commentId) {
-    return article.comments.findIndex((comment) => comment.id === commentId);
+  constructor(db) {
+    this._Comment = db.models.Comment;
   }
 
-  create(article, comment) {
-    const newComment = {...comment, id: nanoid(MAX_ID_LENGTH)};
-
-    article.comments.push(newComment);
-
-    return newComment;
+  create(articleId, comment) {
+    return this._Comment.create({
+      articleId,
+      ...comment,
+    });
   }
 
-  delete(article, commentId) {
-    return article.comments.splice(this._findIndexByID(article, commentId), 1);
+  async delete(commentId) {
+    const deleted = await this._Comment.destroy({
+      where: {id: commentId},
+    });
+
+    return !!deleted;
   }
 
-  findAll(article) {
-    return article.comments;
+  async findAll(articleId) {
+    return await this._Comment.findAll({
+      where: {
+        'article_id': articleId,
+      },
+      raw: true,
+    });
   }
 
-  findByID(article, commentId) {
-    const index = this._findIndexByID(article, commentId);
-
-    if (index === -1) {
-      return null;
-    }
-
-    return article.comments[index];
+  async findByID(commentId) {
+    return await this._Comment.findByPk(commentId);
   }
 }
 

@@ -5,8 +5,8 @@
   "main": "./src/service/service.js",
   "scripts": {
     "eslint": "eslint --ext .js src/",
-    "generate-mock-data": "node ./src/service/service.js -g 11",
-    "start": "cross-env LOG_LEVEL=error NODE_ENV=production nodemon -r dotenv/config ./src/service/service.js --server",
+    "generate-mock-data": "cross-env LOG_LEVEL=info node -r dotenv/config ./src/service/service.js -f 11",
+    "start": "cross-env LOG_LEVEL=info NODE_ENV=production node -r dotenv/config ./src/service/service.js --server",
     "start:front": "nodemon -r dotenv/config src/express/app.js",
     "start:debug": "cross-env LOG_LEVEL=info NODE_ENV=development nodemon -r dotenv/config ./src/service/service.js --server | ./node_modules/.bin/pino-pretty",
     "test": "npm run eslint & npm run test:all",
@@ -31,6 +31,7 @@
     "dotenv": "8.2.0",
     "eslint": "7.18.0",
     "eslint-config-htmlacademy": "0.6.0",
+    "faker": "5.5.3",
     "husky": "4.3.8",
     "jest": "26.6.3",
     "lint-staged": "^10.5.3",

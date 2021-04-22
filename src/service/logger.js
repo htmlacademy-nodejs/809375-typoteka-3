@@ -2,6 +2,7 @@
 
 const pino = require(`pino`);
 const path = require(`path`);
+
 const {Env, ProjectPath} = require(`../constants`);
 
 const isDevMode = process.env.NODE_ENV === Env.DEVELOPMENT;
@@ -12,7 +13,7 @@ const logger = pino({
   name: `base-logger`,
   level: process.env.LOG_LEVEL || defaultLogLevel,
   prettyPrint: isDevMode,
-}, isDevMode ? process.stdout : pino.destination(LOG_FILE)); // TODO doesn't log to file
+}, isDevMode ? process.stdout : pino.destination(LOG_FILE));
 
 module.exports = {
   logger,
