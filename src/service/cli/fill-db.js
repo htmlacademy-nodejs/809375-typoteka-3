@@ -3,7 +3,6 @@
 const path = require(`path`);
 const chalk = require(`chalk`);
 const {nanoid} = require(`nanoid`);
-const fs = require(`fs`).promises;
 const faker = require(`faker`);
 
 const defineModels = require(`../models`);
@@ -104,7 +103,6 @@ const createMocks = async (amount) => {
       comments,
     });
 
-    const content = JSON.stringify(generatedArticles);
 
     try {
       await Promise.all(generatedArticles.map(async (article) => {
@@ -115,7 +113,6 @@ const createMocks = async (amount) => {
       logger.error(`An error occurred: ${err.message}`);
     }
 
-    await fs.writeFile(MOCK_FILE, content);
     console.log(chalk.green(`Success write ${amount} mocks to ${MOCK_FILE}`));
     process.exit(0);
   } catch (err) {
