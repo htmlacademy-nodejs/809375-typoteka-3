@@ -15,7 +15,7 @@ const myController = (api) => {
   });
 
   route.get(`/comments`, async (req, res) => {
-    const articles = await api.getArticles();
+    const articles = await api.getArticles({comments: true});
     const comments = articles.reduce((acc, article) => {
       const articleCommentsWithTitle = {
         title: article.title,

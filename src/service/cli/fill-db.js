@@ -104,7 +104,7 @@ const createMocks = async (amount) => {
 
     await Promise.all(generatedArticles.map(async (article) => {
       const createdArticle = await Article.create(article, {include: [Alias.COMMENTS]});
-      createdArticle.addCategories(article.categories);
+      await createdArticle.addCategories(article.categories);
     }));
 
     console.log(chalk.green(`Success write ${amount} mocks to DB`));

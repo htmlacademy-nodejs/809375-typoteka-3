@@ -10,8 +10,11 @@ class ApiProvider {
     });
   }
 
-  async getArticles() {
-    const response = await this.client.get(`/articles`);
+  async getArticles({comments} = {}) {
+
+    const response = await this.client.get(`/articles`, {
+      params: {comments},
+    });
 
     return response.data;
   }

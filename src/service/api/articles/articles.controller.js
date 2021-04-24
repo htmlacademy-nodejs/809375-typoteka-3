@@ -11,9 +11,11 @@ const articlesController = (articlesService, commentService) => {
   const route = new Router();
 
   route.get(`/`, async (req, res) => {
-    const offers = await articlesService.findAll();
+    const {comments} = req.query;
 
-    return res.status(StatusCodes.OK).json(offers);
+    const articles = await articlesService.findAll(comments);
+
+    return res.status(StatusCodes.OK).json(articles);
   });
 
   route.post(`/`, articleValidator.create, (async (req, res) => {
