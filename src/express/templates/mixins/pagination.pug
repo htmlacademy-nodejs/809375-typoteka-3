@@ -1,0 +1,19 @@
+mixin pagination(page, totalPages)
+  - let i = 1;
+
+  ul.preview__pagination.pagination
+    li
+      a(
+        class=`pagination__button button button--backwards ${page === 1 ? 'button--disabled' : ''}`
+        href=`?page=${page - 1}`
+        aria-label='Страница назад'
+      ) Назад
+    while i++ <= totalPages
+      li(class=`pagination__item ${i - 1 === page ? 'pagination__item--active': ''}`)
+        a(href=`?page=${i - 1}`) #{i - 1}
+    li
+      a(
+        class=`pagination__button button button--forward ${page === totalPages ? 'button--disabled' : ''}`
+        href=`?page=${page + 1}`
+        aria-label='Страница вперед'
+      ) Вперед

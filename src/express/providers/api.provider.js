@@ -10,10 +10,14 @@ class ApiProvider {
     });
   }
 
-  async getArticles({comments} = {}) {
+  async getArticles({comments, offset, limit} = {}) {
 
     const response = await this.client.get(`/articles`, {
-      params: {comments},
+      params: {
+        comments,
+        offset,
+        limit,
+      },
     });
 
     return response.data;
