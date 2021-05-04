@@ -1,7 +1,5 @@
 "use strict";
 
-const {nanoid} = require(`nanoid`);
-
 const Alias = require(`../../models/alias`);
 
 class ArticlesService {
@@ -34,10 +32,28 @@ class ArticlesService {
     });
   }
 
-  async findAll() {
-    return await this._Article.findAll({
+  async findAll(needComments) {
+    const include = [Alias.CATEGORIES];
+
+    console.log({needComments});
+
+    if (needComments) {
+      include.push(Alias.COMMENTS);
+    }
+
+    const articles = await this._Article.findAll({include});
+    return articles.map((article) => article.get());
+  }
+
+  async findPage({limit, offset}) {
+    const {count, rows} = await this._Article.findAndCountAll({
+      limit,
+      offset,
       include: [Alias.CATEGORIES, Alias.COMMENTS],
+      distinct: true,
     });
+
+    return {count, articles: rows};
   }
 }
 

@@ -11,9 +11,16 @@ const articlesController = (articlesService, commentService) => {
   const route = new Router();
 
   route.get(`/`, async (req, res) => {
-    const offers = await articlesService.findAll();
+    const {offset, limit, comments} = req.query;
 
-    return res.status(StatusCodes.OK).json(offers);
+    let result;
+
+    if (limit || offset) {
+      result = await articlesService.findPage({limit, offset});
+    } else {
+      result = await articlesService.findAll(comments);
+    }
+    return res.status(StatusCodes.OK).json(result);
   });
 
   route.post(`/`, articleValidator.create, (async (req, res) => {

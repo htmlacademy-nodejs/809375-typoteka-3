@@ -35,7 +35,6 @@ const define = (sequelize) => {
     as: Alias.ARTICLES,
   });
 
-
   Comment.belongsTo(Article, {
     as: Alias.COMMENTS,
     foreignKey: `article_id`,

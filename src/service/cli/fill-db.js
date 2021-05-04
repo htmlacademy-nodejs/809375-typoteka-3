@@ -3,7 +3,6 @@
 const path = require(`path`);
 const chalk = require(`chalk`);
 const {nanoid} = require(`nanoid`);
-const fs = require(`fs`).promises;
 const faker = require(`faker`);
 
 const defineModels = require(`../models`);
@@ -25,9 +24,8 @@ const {
   MAX_ID_LENGTH,
 } = require(`../../constants`);
 
-const {DATA_FOLDER, ROOT_FOLDER} = ProjectPath;
+const {DATA_FOLDER} = ProjectPath;
 
-const MOCK_FILE = path.resolve(ROOT_FOLDER, `mocks.json`);
 const SENTENCES_FILE = path.resolve(DATA_FOLDER, `sentences.txt`);
 const TITLES_FILE = path.resolve(DATA_FOLDER, `titles.txt`);
 const CATEGORIES_FILE = path.resolve(DATA_FOLDER, `categories.txt`);
@@ -104,19 +102,12 @@ const createMocks = async (amount) => {
       comments,
     });
 
-    const content = JSON.stringify(generatedArticles);
+    await Promise.all(generatedArticles.map(async (article) => {
+      const createdArticle = await Article.create(article, {include: [Alias.COMMENTS]});
+      await createdArticle.addCategories(article.categories);
+    }));
 
-    try {
-      await Promise.all(generatedArticles.map(async (article) => {
-        const createdArticle = await Article.create(article, {include: [Alias.COMMENTS]});
-        createdArticle.addCategories(article.categories);
-      }));
-    } catch (err) {
-      logger.error(`An error occurred: ${err.message}`);
-    }
-
-    await fs.writeFile(MOCK_FILE, content);
-    console.log(chalk.green(`Success write ${amount} mocks to ${MOCK_FILE}`));
+    console.log(chalk.green(`Success write ${amount} mocks to DB`));
     process.exit(0);
   } catch (err) {
     logger.error(`An error occurred: ${err.message}`);
