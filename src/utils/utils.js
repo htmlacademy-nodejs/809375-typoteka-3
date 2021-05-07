@@ -52,12 +52,11 @@ const readContent = async (filePath) => {
 
 const removeBlankLines = (string) => string.trim().split(`\n`);
 
-const generateCommentsFrom = (array, users, count) => {
+const generateCommentsFrom = (array, count) => {
   const comments = [];
 
   for (let i = 0; i < count; i++) {
     const comment = {
-      [`user_id`]: getRandomItemFrom(users).id,
       text: getRandomItemFrom(array),
     };
 
