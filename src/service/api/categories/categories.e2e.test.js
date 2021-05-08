@@ -3,23 +3,43 @@
 const request = require(`supertest`);
 const express = require(`express`);
 const {StatusCodes} = require(`http-status-codes`);
+const Sequelize = require(`sequelize`);
 
 const {getFixtureContent} = require(`../../../utils/utils`);
 const {categoriesController} = require(`./categories.controller`);
 const {CategoriesService} = require(`./categories.service`);
+const initDB = require(`../../lib/init-db`);
+const {generateUsers} = require(`../../../utils/utils`);
 
 const getMockData = () => JSON.parse(getFixtureContent(`mockArticles.json`));
 
+const mockDB = new Sequelize(`sqlite::memory:`, {logging: false});
 const app = express();
 app.use(express.json());
 
-describe(`Categories api end-points`, () => {
-  let mockData;
+const mockCategories = [
+  `Деревья`,
+  `За жизнь`,
+  `Без рамки`,
+  `Разное`,
+  `IT`,
+  `Музыка`,
+  `Кино`,
+  `Программирование`,
+  `Железо`,
+];
 
-  beforeEach(() => {
-    mockData = getMockData();
-    app.use(`/api/categories`, categoriesController(new CategoriesService(mockData)));
+beforeAll(async () => {
+  await initDB(mockDB, {
+    articles: getMockData(),
+    categories: mockCategories,
+    users: generateUsers(5),
   });
+
+  app.use(`/api/categories`, categoriesController(new CategoriesService(mockDB)));
+});
+
+describe(`Categories api end-points`, () => {
 
   test(`should be status 200 on get all categories`, async () => {
     const response = await request(app).get(`/api/categories`);
@@ -29,8 +49,9 @@ describe(`Categories api end-points`, () => {
 
   test(`should have correct response body`, async () => {
     const response = await request(app).get(`/api/categories`);
-    const categories = [`Разное`, `Музыка`, `Кино`, `Программирование`, `Железо`, `IT`, `Без рамки`];
 
-    expect(response.body).toStrictEqual(categories);
+    const responseCategories = response.body.map((category) => category.label);
+
+    expect(responseCategories).toStrictEqual(mockCategories);
   });
 });

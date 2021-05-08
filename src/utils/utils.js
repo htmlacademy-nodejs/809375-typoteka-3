@@ -4,7 +4,10 @@ const chalk = require(`chalk`);
 const fs = require(`fs`).promises;
 const fsSync = require(`fs`);
 const path = require(`path`);
+const faker = require(`faker`);
 const express = require(`express`);
+const {MAX_ID_LENGTH} = require(`../constants`);
+const {nanoid} = require(`nanoid`);
 
 const getRandomInt = (min, max) => {
   const minimal = Math.ceil(min);
@@ -83,6 +86,16 @@ const createTestServer = (route, controller, mockData, ArticleService, CommentSe
   return app;
 };
 
+const generateUsers = (amount) =>
+  [...Array(amount)].map((it, index) => ({
+    avatar: `avatar-${index + 1}.png`,
+    email: `${faker.internet.email()}`,
+    firstName: faker.name.firstName(),
+    lastName: faker.name.lastName(),
+    isAuthor: false,
+    passwordHash: nanoid(MAX_ID_LENGTH),
+  }));
+
 module.exports = {
   createTestServer,
   formatDate,
@@ -93,5 +106,6 @@ module.exports = {
   getRandomItemFrom,
   readContent,
   removeBlankLines,
+  generateUsers,
   shuffleArray,
 };

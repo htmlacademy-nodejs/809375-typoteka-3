@@ -2,12 +2,11 @@
 
 const path = require(`path`);
 const chalk = require(`chalk`);
-const {nanoid} = require(`nanoid`);
-const faker = require(`faker`);
 
 const db = require(`../lib/db`);
 const {logger} = require(`../logger`);
 const initDB = require(`../lib/init-db`);
+const {generateUsers} = require(`../../utils/utils`);
 
 const {
   getRandomInt,
@@ -20,7 +19,6 @@ const {
 const {
   MAX_COMMENTS_AMOUNT,
   ProjectPath,
-  MAX_ID_LENGTH,
 } = require(`../../constants`);
 
 const {DATA_FOLDER} = ProjectPath;
@@ -32,17 +30,7 @@ const COMMENTS_FILE = path.resolve(DATA_FOLDER, `comments.txt`);
 const MIN_ANNOUNCE_LENGTH = 1;
 const MAX_ANNOUNCE_LENGTH = 5;
 
-const generateUsers = (amount) =>
-  [...Array(amount)].map((it, index) => ({
-    avatar: `avatar-${index + 1}.png`,
-    email: `${faker.internet.email()}`,
-    firstName: faker.name.firstName(),
-    lastName: faker.name.lastName(),
-    isAuthor: false,
-    passwordHash: nanoid(MAX_ID_LENGTH),
-  }));
-
-const generateArticles = (amount, {titles, sentences, categories, comments, users}) => {
+const generateArticles = (amount, {titles, sentences, categories, comments}) => {
   return [...Array(amount)].map(() => {
     return {
       title: getRandomItemFrom(titles),
