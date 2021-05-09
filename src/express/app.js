@@ -3,6 +3,7 @@
 const express = require(`express`);
 const path = require(`path`);
 const helmet = require(`helmet`);
+const {StatusCodes} = require(`http-status-codes`);
 
 const {rootController} = require(`./entities/root/root.controller`);
 const {myController} = require(`./entities/my/my.controller`);
@@ -27,6 +28,13 @@ app.use(`/my`, myController(api));
 app.use(`/articles`, articleController(api));
 app.use(`/search`, searchController(api));
 app.use(`/categories`, categoriesController());
+
+app.use((req, res) => res.status(StatusCodes.NOT_FOUND).render(`errors/404`));
+app.use((err, _req, res, _next) => {
+  res
+    .status(StatusCodes.INTERNAL_SERVER_ERROR)
+    .render(`errors/500`);
+});
 
 app.use(helmet.xssFilter());
 app.use(helmet.contentSecurityPolicy({

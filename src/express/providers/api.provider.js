@@ -42,9 +42,13 @@ class ApiProvider {
   }
 
   async createArticle(data) {
-    const response = await this.client.post(`/articles`, {...data});
+    try {
+      const response = await this.client.post(`/articles`, {...data});
 
-    return response.data;
+      return response.data;
+    } catch (err) {
+      throw new Error(JSON.stringify(err.response.data));
+    }
   }
 }
 
