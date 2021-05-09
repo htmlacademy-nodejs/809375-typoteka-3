@@ -35,8 +35,6 @@ class ArticlesService {
   async findAll(needComments) {
     const include = [Alias.CATEGORIES];
 
-    console.log({needComments});
-
     if (needComments) {
       include.push(Alias.COMMENTS);
     }
