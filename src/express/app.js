@@ -2,6 +2,7 @@
 
 const express = require(`express`);
 const path = require(`path`);
+const helmet = require(`helmet`);
 
 const {rootController} = require(`./entities/root/root.controller`);
 const {myController} = require(`./entities/my/my.controller`);
@@ -26,6 +27,14 @@ app.use(`/my`, myController(api));
 app.use(`/articles`, articleController(api));
 app.use(`/search`, searchController(api));
 app.use(`/categories`, categoriesController());
+
+app.use(helmet.xssFilter());
+app.use(helmet.contentSecurityPolicy({
+  directives: {
+    defaultSrc: [`self`],
+    scriptSrc: [`self`],
+  },
+}));
 
 app.listen(EXPRESS_DEFAULT_PORT, () => {
   console.log(`Example app listening at http://localhost:${EXPRESS_DEFAULT_PORT}`);
