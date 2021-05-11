@@ -21,6 +21,13 @@ app.use(express.static(path.resolve(__dirname, `./public`)));
 app.use(express.static(path.resolve(__dirname, `./uploads`)));
 app.set(`views`, path.resolve(__dirname, `./templates`));
 app.set(`view engine`, `pug`);
+app.use(helmet.xssFilter());
+app.use(helmet.contentSecurityPolicy({
+  directives: {
+    defaultSrc: [`self`],
+    scriptSrc: [`self`],
+  },
+}));
 
 app.use(`/`, rootController(api));
 app.use(`/`, authController());
@@ -35,14 +42,6 @@ app.use((err, _req, res, _next) => {
     .status(StatusCodes.INTERNAL_SERVER_ERROR)
     .render(`errors/500`);
 });
-
-app.use(helmet.xssFilter());
-app.use(helmet.contentSecurityPolicy({
-  directives: {
-    defaultSrc: [`self`],
-    scriptSrc: [`self`],
-  },
-}));
 
 app.listen(EXPRESS_DEFAULT_PORT, () => {
   console.log(`Example app listening at http://localhost:${EXPRESS_DEFAULT_PORT}`);
