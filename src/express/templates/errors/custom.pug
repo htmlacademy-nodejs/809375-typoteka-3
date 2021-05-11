@@ -1,0 +1,16 @@
+extends ../layout
+
+// TODO add error type mapper for view
+block header
+  header.header.header--error
+    a.header__logo.header__logo--404.logo(href='#')
+      img(src='/img/icons/logo.svg' alt='логотип Тайпотеки')
+    a.header__registration(href='#') Регистрация
+    a.header__enter(href='#') Вход с паролем
+    a.header__search.button.button--search(href='#' aria-label='поиск по сайту')
+block content
+  main
+    h1.visually-hidden Ошибка
+    section.error
+      h2.error__title.title.title--big Похоже что-то пошло не так #{errorMessage}
+      a.error__link.text.text--big(href='/') Вернуться на главную

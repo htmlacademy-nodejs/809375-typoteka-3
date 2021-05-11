@@ -1,5 +1,6 @@
 "use strict";
 
+const {StatusCodes} = require(`http-status-codes`);
 const {Router} = require(`express`);
 const {getImageMiddleware} = require(`../../lib/multer`);
 
@@ -25,7 +26,8 @@ const articleController = (api) => {
 
       res.redirect(`/my`);
     } catch (error) {
-      res.send(error);
+      res.render(`errors/custom`, {errorMessage: error.message});
+      res.status(StatusCodes.BAD_REQUEST).send(error.message);
     }
   });
   route.get(`/:id`, (req, res) => res.render(`articles/post`));

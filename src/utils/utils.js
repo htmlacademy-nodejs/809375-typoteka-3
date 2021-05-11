@@ -4,7 +4,10 @@ const chalk = require(`chalk`);
 const fs = require(`fs`).promises;
 const fsSync = require(`fs`);
 const path = require(`path`);
+const faker = require(`faker`);
 const express = require(`express`);
+const {MAX_ID_LENGTH} = require(`../constants`);
+const {nanoid} = require(`nanoid`);
 
 const getRandomInt = (min, max) => {
   const minimal = Math.ceil(min);
@@ -52,12 +55,11 @@ const readContent = async (filePath) => {
 
 const removeBlankLines = (string) => string.trim().split(`\n`);
 
-const generateCommentsFrom = (array, users, count) => {
+const generateCommentsFrom = (array, count) => {
   const comments = [];
 
   for (let i = 0; i < count; i++) {
     const comment = {
-      [`user_id`]: getRandomItemFrom(users).id,
       text: getRandomItemFrom(array),
     };
 
@@ -71,18 +73,28 @@ const getFixturePath = (fileName) => path.resolve(__dirname, `..`, `..`, `__fixt
 
 const getFixtureContent = (fileName) => fsSync.readFileSync(getFixturePath(fileName), `utf-8`).trim();
 
-const createTestServer = (route, controller, mockData, ArticleService, CommentService) => {
+const createTestServer = (route, controller, db, ArticleService, CommentService) => {
   const app = express();
   app.use(express.json());
 
   if (CommentService) {
-    app.use(route, controller(new ArticleService(mockData), new CommentService(mockData)));
+    app.use(route, controller(new ArticleService(db), new CommentService(db)));
   }
 
-  app.use(route, controller(new ArticleService(mockData)));
+  app.use(route, controller(new ArticleService(db)));
 
   return app;
 };
+
+const generateUsers = (amount) =>
+  [...Array(amount)].map((it, index) => ({
+    avatar: `avatar-${index + 1}.png`,
+    email: `${faker.internet.email()}`,
+    firstName: faker.name.firstName(),
+    lastName: faker.name.lastName(),
+    isAuthor: false,
+    passwordHash: nanoid(MAX_ID_LENGTH),
+  }));
 
 module.exports = {
   createTestServer,
@@ -94,5 +106,6 @@ module.exports = {
   getRandomItemFrom,
   readContent,
   removeBlankLines,
+  generateUsers,
   shuffleArray,
 };
