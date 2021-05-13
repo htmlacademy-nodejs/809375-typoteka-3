@@ -24,8 +24,8 @@ app.set(`view engine`, `pug`);
 app.use(helmet.xssFilter());
 app.use(helmet.contentSecurityPolicy({
   directives: {
-    defaultSrc: [`self`],
-    scriptSrc: [`self`],
+    defaultSrc: [`'self'`],
+    scriptSrc: [`'self'`, `'unsafe-eval'`],
   },
 }));
 
