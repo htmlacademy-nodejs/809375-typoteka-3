@@ -30,7 +30,7 @@ app.use(helmet.contentSecurityPolicy({
 }));
 
 app.use(`/`, rootController(api));
-app.use(`/`, authController());
+app.use(`/`, authController(api));
 app.use(`/my`, myController(api));
 app.use(`/articles`, articleController(api));
 app.use(`/search`, searchController(api));

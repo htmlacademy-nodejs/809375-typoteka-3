@@ -2,7 +2,7 @@
 
 const bcrypt = require(`bcrypt`);
 
-class SearchService {
+class UsersService {
   constructor(db) {
     this._User = db.models.User;
     this._saltRounds = Number.parseInt(process.env.PASSWORD_SALT_ROUNDS, 10);
@@ -40,5 +40,5 @@ class SearchService {
 }
 
 module.exports = {
-  SearchService,
+  UsersService,
 };
