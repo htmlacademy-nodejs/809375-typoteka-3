@@ -93,7 +93,7 @@ const generateUsers = (amount) =>
     firstName: faker.name.firstName(),
     lastName: faker.name.lastName(),
     isAuthor: false,
-    passwordHash: nanoid(MAX_ID_LENGTH),
+    password: nanoid(MAX_ID_LENGTH),
   }));
 
 module.exports = {
