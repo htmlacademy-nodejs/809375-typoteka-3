@@ -1,4 +1,5 @@
 "use strict";
+
 const {Op} = require(`sequelize`);
 const Alias = require(`../../models/alias`);
 
