@@ -1,6 +1,6 @@
 "use strict";
 
-const {StatusCodes} = require(`http-status-codes`);
+const {ReasonPhrases} = require(`http-status-codes`);
 const {Router} = require(`express`);
 
 const authController = (api) => {
@@ -16,7 +16,7 @@ const authController = (api) => {
       lastName: body.surname,
       email: body.email,
       password: body.password,
-      repeatPassword: body[`password-repeat`],
+      repeatPassword: body[`repeat-password`],
       isAuthor: false,
     };
 
@@ -24,8 +24,9 @@ const authController = (api) => {
       await api.createUser(userData);
       res.redirect(`/login`);
     } catch (err) {
-      console.log(err);
-      res.status(StatusCodes.EXPECTATION_FAILED).json(`ololo`);
+      const errors = err.response.data.errors ? err.response.data.errors.map((error) => error.msg) : ReasonPhrases.INTERNAL_SERVER_ERROR;
+
+      res.render(`root/sign-up`, {errors});
     }
   });
 
