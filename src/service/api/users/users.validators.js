@@ -68,6 +68,6 @@ exports.exist = (userService) => async (req, res, next) => {
       next();
     }
   } catch (err) {
-    console.log(err);
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json(err);
   }
 };
