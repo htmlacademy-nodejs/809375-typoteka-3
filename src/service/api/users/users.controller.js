@@ -5,9 +5,16 @@ const {Router} = require(`express`);
 const {validationResult} = require(`express-validator`);
 const userValidator = require(`./users.validators`);
 
-
 const userController = (userService) => {
   const route = new Router();
+
+  route.get(`/`, async (req, res) => {
+    const users = await userService.findAll();
+
+    console.log(1231231);
+
+    return res.status(StatusCodes.OK).json(users);
+  });
 
   route.post(`/`, userValidator.exist(userService), userValidator.create, async (req, res) => {
     const result = validationResult(req);

@@ -2,6 +2,8 @@
 
 const bcrypt = require(`bcrypt`);
 
+const Alias = require(`../../models/alias`);
+
 class UsersService {
   constructor(db) {
     this._User = db.models.User;
@@ -19,6 +21,12 @@ class UsersService {
       lastName: rawUser.lastName,
       avatar: rawUser.avatar,
     };
+  }
+
+  async findAll() {
+    const include = [Alias.ARTICLES];
+
+    return await this._User.findAll({include});
   }
 
   async findOne(id) {
