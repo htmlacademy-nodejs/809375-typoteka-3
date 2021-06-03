@@ -11,8 +11,6 @@ const userController = (userService) => {
   route.get(`/`, async (req, res) => {
     const users = await userService.findAll();
 
-    console.log(1231231);
-
     return res.status(StatusCodes.OK).json(users);
   });
 
