@@ -51,7 +51,6 @@ describe(`Users api end-points`, () => {
     expect(response.body.length).toBe(USERS_AMOUNT);
   });
 
-
   test(`should create user with valid data`, async () => {
     const validUser = {
       firstName: `Serhii`,
@@ -78,6 +77,7 @@ describe(`Users api end-points`, () => {
       repeatPassword: `213123123`,
       isAuthor: false,
     };
+
     const responseWithErrors = {
       "errors": [
         {
