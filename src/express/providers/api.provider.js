@@ -23,6 +23,12 @@ class ApiProvider {
     return response.data;
   }
 
+  async createUser(user) {
+    const response = await this.client.post(`/users`, user);
+
+    return response.data;
+  }
+
   async getArticle(id) {
     const response = await this.client.get(`/articles/${id}`);
 

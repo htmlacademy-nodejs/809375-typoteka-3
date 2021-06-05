@@ -18,10 +18,10 @@ const define = (sequelize) => {
       allowNull: false,
       unique: true,
     },
-    passwordHash: {
+    password: {
       type: DataTypes.STRING,
       allowNull: false,
-      field: `password_hash`,
+      field: `password`,
     },
     firstName: {
       type: DataTypes.STRING,
