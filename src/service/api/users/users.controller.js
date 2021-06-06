@@ -14,22 +14,27 @@ const userController = (userService) => {
     return res.status(StatusCodes.OK).json(users);
   });
 
-  route.post(`/`, userValidator.exist(userService), userValidator.create, async (req, res) => {
-    const result = validationResult(req);
-    const {errors} = result;
+  route.post(`/`,
+      [
+        userValidator.exist(userService),
+        userValidator.create,
+      ],
+      async (req, res) => {
+        const result = validationResult(req);
+        const {errors} = result;
 
-    if (errors.length === 0) {
-      try {
-        const user = await userService.create(req.body);
+        if (errors.length === 0) {
+          try {
+            const user = await userService.create(req.body);
 
-        return res.status(StatusCodes.OK).json(user);
-      } catch (err) {
-        return res.status(StatusCodes.UNPROCESSABLE_ENTITY).json({err});
-      }
-    }
+            return res.status(StatusCodes.OK).json(user);
+          } catch (err) {
+            return res.status(StatusCodes.UNPROCESSABLE_ENTITY).json({err});
+          }
+        }
 
-    return res.status(StatusCodes.UNPROCESSABLE_ENTITY).json({errors});
-  });
+        return res.status(StatusCodes.UNPROCESSABLE_ENTITY).json({errors});
+      });
 
   return route;
 };

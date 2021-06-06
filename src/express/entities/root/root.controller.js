@@ -22,7 +22,6 @@ const rootController = (api) => {
 
     const totalPages = Math.ceil(count / ARTICLES_PER_PAGE);
 
-
     res.render(`root/main`, {
       articles,
       page,
