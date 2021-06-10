@@ -47,6 +47,7 @@
     "cross-env": "7.0.3",
     "express": "4.17.1",
     "express-pino-logger": "6.0.0",
+    "express-session": "1.17.2",
     "express-validator": "6.9.2",
     "helmet": "^4.6.0",
     "http-status-codes": "2.1.4",
