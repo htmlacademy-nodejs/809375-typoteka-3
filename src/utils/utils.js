@@ -31,19 +31,6 @@ const shuffleArray = (array) => {
   return shuffledArray;
 };
 
-const generatePastDate = (pastMonthAmount) => {
-  const currentDate = new Date();
-
-  return new Date(currentDate.setMonth(currentDate.getMonth() - pastMonthAmount));
-};
-
-const formatDate = (date) => {
-  return date
-    .toISOString()
-    .replace(`T`, ` `)
-    .substr(0, 19);
-};
-
 const readContent = async (filePath) => {
   try {
     const content = await fs.readFile(filePath, `utf8`);
@@ -98,9 +85,7 @@ const generateUsers = (amount) =>
 
 module.exports = {
   createTestServer,
-  formatDate,
   generateCommentsFrom,
-  generatePastDate,
   getFixtureContent,
   getRandomInt,
   getRandomItemFrom,
