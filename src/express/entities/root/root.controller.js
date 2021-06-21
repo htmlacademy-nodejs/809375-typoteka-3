@@ -8,6 +8,8 @@ const rootController = (api) => {
   const route = new Router();
 
   route.get(`/`, async (req, res) => {
+    const {user} = req.session;
+
     // get page number
     let {page = 1} = req.query;
     page = parseInt(page, 10);
@@ -26,6 +28,7 @@ const rootController = (api) => {
       articles,
       page,
       totalPages,
+      user,
     });
   });
 

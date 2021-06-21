@@ -26,12 +26,13 @@ block content
             .form__field
               label
                 input(type='password' name='repeat-password' placeholder='Повтор пароля' required='')
-            .form__validation-error
-              p.form__error-message При регистрации произошли ошибки:
-              ul.form__errors
-                if (errors)
-                  each error in errors
-                    li.form__error=error
+            if errors
+              .form__validation-error
+                p.form__error-message При регистрации произошли ошибки:
+                ul.form__errors
+                  if (errors.length)
+                    each error in errors
+                      li.form__error=error
             .form__image-loader
               a.form__avatar.avatar
                 img(src='/img/icons/smile.svg' alt='аватар пользователя')

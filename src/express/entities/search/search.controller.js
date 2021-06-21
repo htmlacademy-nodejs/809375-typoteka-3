@@ -7,6 +7,7 @@ const searchController = (api) => {
 
   route.get(`/`, async (req, res) => {
     const {query} = req.query;
+    const {user} = req.session;
 
     try {
       const articles = await api.search(query);
@@ -14,10 +15,12 @@ const searchController = (api) => {
       res.render(`root/search`, {
         classNames: `wrapper-color`,
         articles,
+        user,
       });
     } catch (err) {
       res.render(`root/search`, {
         classNames: `wrapper-color`,
+        user,
       });
     }
   });
