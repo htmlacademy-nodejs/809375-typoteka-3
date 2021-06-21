@@ -2,6 +2,7 @@
 
 const {StatusCodes} = require(`http-status-codes`);
 const {Router} = require(`express`);
+const csrf = require(`csurf`);
 
 const {getImageMiddleware} = require(`../../lib/multer`);
 const {checkUserAuthMiddleware, checkIsUserAuthor} = require(`../../middlewares/auth`);
@@ -9,12 +10,20 @@ const {checkUserAuthMiddleware, checkIsUserAuthor} = require(`../../middlewares/
 const articleController = (api) => {
   const route = new Router();
   const imageMiddleware = getImageMiddleware(`upload`);
+  const csrfProtection = csrf({cookie: false});
 
   route.get(`/add`,
       [
         checkUserAuthMiddleware,
         checkIsUserAuthor,
-      ], (req, res) => res.render(`articles/new-post`));
+        csrfProtection,
+      ], (req, res) => {
+
+        res.render(`articles/new-post`, {
+          csrfToken: req.csrfToken(),
+        });
+      });
+
   route.post(`/add`,
       [
         checkUserAuthMiddleware,
@@ -33,11 +42,14 @@ const articleController = (api) => {
           fullText: body[`full-text`],
         };
 
+        console.log(`123123`);
+
         try {
           await api.createArticle(newArticle);
 
           res.redirect(`/my`);
         } catch (error) {
+          console.log(error);
           res.render(`errors/custom`, {errorMessage: error.message, user});
           res.status(StatusCodes.BAD_REQUEST).send(error.message);
         }
