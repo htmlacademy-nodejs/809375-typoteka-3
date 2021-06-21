@@ -8,6 +8,8 @@ const rootController = (api) => {
   const route = new Router();
 
   route.get(`/`, async (req, res) => {
+    const {user} = req.session;
+
     // get page number
     let {page = 1} = req.query;
     page = parseInt(page, 10);
@@ -22,11 +24,11 @@ const rootController = (api) => {
 
     const totalPages = Math.ceil(count / ARTICLES_PER_PAGE);
 
-
     res.render(`root/main`, {
       articles,
       page,
       totalPages,
+      user,
     });
   });
 

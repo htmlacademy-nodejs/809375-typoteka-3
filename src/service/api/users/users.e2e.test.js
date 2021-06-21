@@ -30,6 +30,15 @@ const mockCategories = [
   `Железо`,
 ];
 
+const validUser = {
+  firstName: `Serhii`,
+  lastName: `Shramko`,
+  email: `shramko.web@gmail.com`,
+  password: `213123123`,
+  repeatPassword: `213123123`,
+  isAuthor: false,
+};
+
 beforeEach(async () => {
   await initDB(mockDB, {
     articles: getMockData(),
@@ -52,21 +61,11 @@ describe(`Users api end-points`, () => {
   });
 
   test(`should create user with valid data`, async () => {
-    const validUser = {
-      firstName: `Serhii`,
-      lastName: `Shramko`,
-      email: `Jonatan.Hilpaert@hotmail.com`,
-      password: `213123123`,
-      repeatPassword: `213123123`,
-      isAuthor: false,
-    };
-
     const response = await request(app).post(`/api/users`).send(validUser);
 
     expect(response.status).toEqual(StatusCodes.OK);
     expect(response.body).toHaveProperty(`id`);
   });
-
 
   test(`should send 422 error on incorrect post data`, async () => {
     const incorrectUser = {
@@ -99,5 +98,36 @@ describe(`Users api end-points`, () => {
 
     expect(response.status).toEqual(StatusCodes.UNPROCESSABLE_ENTITY);
     expect(response.body).toStrictEqual(responseWithErrors);
+  });
+
+  test(`should return user with 200 ok `, async () => {
+    // Create user for test
+    await request(app).post(`/api/users`).send(validUser);
+
+    const response = await request(app).post(`/api/users/auth`).send({
+      password: validUser.password,
+      email: validUser.email,
+    });
+
+    expect(response.status).toEqual(StatusCodes.OK);
+    expect(response.body).toHaveProperty(`id`);
+    expect(response.body).toStrictEqual(expect.objectContaining({
+      email: validUser.email,
+      firstName: validUser.firstName,
+    }));
+  });
+
+  test(`should return error with 401 ok `, async () => {
+    // Create user for test
+    await request(app).post(`/api/users`).send(validUser);
+
+    const response = await request(app).post(`/api/users/auth`).send({
+      // some invalid password
+      password: `1231231`,
+      email: validUser.email,
+    });
+
+    expect(response.status).toEqual(StatusCodes.UNAUTHORIZED);
+    expect(response.body).toStrictEqual(`Password is incorrect`);
   });
 });

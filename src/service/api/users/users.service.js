@@ -1,8 +1,7 @@
 "use strict";
 
-const bcrypt = require(`bcrypt`);
-
 const Alias = require(`../../models/alias`);
+const {hash} = require(`../../lib/password`);
 
 class UsersService {
   constructor(db) {
@@ -11,16 +10,27 @@ class UsersService {
   }
 
   async create(userData) {
-    userData.password = await bcrypt.hash(userData.password, this._saltRounds);
+    userData.password = await hash(userData.password, this._saltRounds);
     const user = await this._User.create(userData);
-
     const rawUser = user.get();
+
     return {
       id: rawUser.id,
       firstName: rawUser.firstName,
       lastName: rawUser.lastName,
       avatar: rawUser.avatar,
     };
+  }
+
+  async findByEmail(email) {
+    const user = await this._User.findOne({
+      where: {
+        email,
+      },
+      raw: true,
+    });
+
+    return user;
   }
 
   async findAll() {

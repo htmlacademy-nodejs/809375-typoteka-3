@@ -29,6 +29,12 @@ class ApiProvider {
     return response.data;
   }
 
+  async auth(email, password) {
+    const response = await this.client.post(`users/auth`, {email, password});
+
+    return response.data;
+  }
+
   async getArticle(id) {
     const response = await this.client.get(`/articles/${id}`);
 
