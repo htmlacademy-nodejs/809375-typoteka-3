@@ -1,7 +1,7 @@
 # Личный проект «Типотека»
 
 * Студент: [Sergey](https://up.htmlacademy.ru/nodejs/3/user/809375).
-* Наставник: [Nikita Kutselay](https://htmlacademy.ru/profile/id32750).
+* Наставник: [Alexey Marunin](https://github.com/html-malex).
 
 ---
 
