@@ -3,7 +3,9 @@
 const {StatusCodes} = require(`http-status-codes`);
 const {Router} = require(`express`);
 const {validationResult} = require(`express-validator`);
+
 const userValidator = require(`./users.validators`);
+const {compare} = require(`../../lib/password`);
 
 const userController = (userService) => {
   const route = new Router();
@@ -35,6 +37,26 @@ const userController = (userService) => {
 
         return res.status(StatusCodes.UNPROCESSABLE_ENTITY).json({errors});
       });
+
+  route.post(`/auth`, async (req, res) => {
+    const {email, password} = req.body;
+
+    const user = await userService.findByEmail(email);
+
+    if (!user) {
+      res.status(StatusCodes.UNAUTHORIZED).json(`Email is incorrect`);
+      return;
+    }
+
+    const passwordIsCorrect = await compare(password, user.password);
+
+    if (passwordIsCorrect) {
+      // delete user.passwordHash;
+      res.status(StatusCodes.OK).json(user);
+    } else {
+      res.status(StatusCodes.UNAUTHORIZED).json(`Password is incorrect`);
+    }
+  });
 
   return route;
 };
