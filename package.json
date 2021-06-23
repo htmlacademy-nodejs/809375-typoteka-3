@@ -6,9 +6,12 @@
   "scripts": {
     "eslint": "eslint --ext .js src/",
     "fill-db": "cross-env LOG_LEVEL=info node -r dotenv/config ./src/service/service.js -f 11",
-    "start": "cross-env LOG_LEVEL=info NODE_ENV=production node -r dotenv/config ./src/service/service.js --server",
-    "start:front": "nodemon -r dotenv/config src/express/app.js",
-    "start:debug": "cross-env LOG_LEVEL=info NODE_ENV=development nodemon -r dotenv/config ./src/service/service.js --server | ./node_modules/.bin/pino-pretty",
+    "rest-api": "cross-env NODE_ENV=production node -r dotenv/config ./src/service/service.js --server",
+    "rest-api::debug": "cross-env LOG_LEVEL=info NODE_ENV=development nodemon -r dotenv/config ./src/service/service.js --server | ./node_modules/.bin/pino-pretty",
+    "ssr": "node -r dotenv/config src/express/app.js",
+    "ssr::debug": "nodemon -r dotenv/config src/express/app.js",
+    "start": "concurrently --prefix \"{time} — {name}\" --names \"BACKEND, SSR\" --prefix-colors \"green,blue\" \"npm run rest-api\" \"npm run ssr\"",
+    "start::debug": "concurrently --prefix \"{time} — {name}\" --names \"BACKEND, SSR\" --prefix-colors \"green,blue\" \"npm run rest-api::debug\" \"npm run ssr::debug\"",
     "test": "npm run eslint & npm run test:all",
     "test:all": "jest",
     "test:rest": "jest .e2e.test.js"
@@ -44,6 +47,7 @@
     "axios": "0.21.1",
     "bcrypt": "5.0.1",
     "commander": "7.0.0",
+    "concurrently": "6.2.0",
     "connect-session-sequelize": "7.1.1",
     "cross-env": "7.0.3",
     "csurf": "1.11.0",

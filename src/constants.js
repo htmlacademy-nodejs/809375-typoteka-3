@@ -18,6 +18,7 @@ const ProjectPath = {
 const Env = {
   DEVELOPMENT: `development`,
   PRODUCTION: `production`,
+  TEST: `test`,
 };
 
 module.exports = {
