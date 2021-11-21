@@ -48,9 +48,9 @@ const userController = (userService) => {
       return;
     }
 
-    const passwordIsCorrect = await compare(password, user.password);
+    const isPasswordCorrect = await compare(password, user.password);
 
-    if (passwordIsCorrect) {
+    if (isPasswordCorrect) {
       // delete user.passwordHash;
       res.status(StatusCodes.OK).json(user);
     } else {

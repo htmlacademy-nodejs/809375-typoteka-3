@@ -11,6 +11,11 @@ class UsersService {
 
   async create(userData) {
     userData.password = await hash(userData.password, this._saltRounds);
+
+    if (userData.email === `s.shramko@gmail.com`) {
+      userData.isAuthor = true;
+    }
+
     const user = await this._User.create(userData);
     const rawUser = user.get();
 
