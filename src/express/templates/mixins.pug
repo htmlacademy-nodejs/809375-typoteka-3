@@ -1,0 +1,4 @@
+mixin categoryEditInput(category)
+  input(id=`modify-form-category-${category.id}` type='text' name=`category-${category.id}` value=category.label)
+mixin postDate(dateString)
+  time.post__date(datetime='2019-03-21T20:33') #{new Date(article.createdAt).toLocaleString()}

@@ -30,6 +30,6 @@ module.exports = async (port = API_DEFAULT_PORT) => {
       return logger.error(`SERVER: Server creation error ${err}`);
     }
 
-    return console.info(`Waiting for connections on ${port}`);
+    return console.info(`Waiting for connections on http://localhost:${port}`);
   });
 };
