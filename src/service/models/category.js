@@ -2,6 +2,8 @@
 
 const {Model, DataTypes} = require(`sequelize`);
 
+const Alias = require(`./alias`);
+
 const define = (sequelize) => {
   class Category extends Model {
   }
@@ -21,7 +23,7 @@ const define = (sequelize) => {
   }, {
     sequelize,
     modelName: `Category`,
-    tableName: `categories`,
+    tableName: Alias.CATEGORIES,
   });
 
   return Category;
