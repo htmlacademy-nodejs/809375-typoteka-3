@@ -23,3 +23,9 @@ DB_PASSWORD= database password
 
 - node 12+
 - PostgreSQL 12
+
+
+## How to develop
+
+`cp .env.example .env`
+`npm run start`
