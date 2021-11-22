@@ -2,15 +2,18 @@
 
 const {Router} = require(`express`);
 
-const categoriesController = () => {
+const categoriesController = (api) => {
   const route = new Router();
 
-  route.get(`/`, (req, res) => {
+  route.get(`/`, async (req, res) => {
     const {user} = req.session;
+
+    const categories = await api.getCategories();
 
     res.render(`root/all-categories`, {
       classNames: [`wrapper`, `wrapper--nobackground`],
       user,
+      categories
     });
   });
 

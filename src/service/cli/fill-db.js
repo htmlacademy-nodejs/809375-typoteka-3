@@ -34,7 +34,7 @@ const generateArticles = (amount, {titles, sentences, categories, comments}) => 
   return [...Array(amount)].map(() => {
     return {
       title: getRandomItemFrom(titles),
-      photo: [`forest@1x.jpg`, `sea@1x.jpg`, `skyscrapper@1x.jpg`][getRandomInt(0, 2)],
+      photo: [`forest@2x.jpg`, `sea@2x.jpg`, `skyscraper@2x.jpg`][getRandomInt(0, 2)],
       announce: shuffleArray(sentences)
         .slice(0, getRandomInt(MIN_ANNOUNCE_LENGTH, MAX_ANNOUNCE_LENGTH))
         .join(` `)
