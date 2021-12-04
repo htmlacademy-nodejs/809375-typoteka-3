@@ -46,7 +46,7 @@ const authController = (api) => {
       password: body.password,
       repeatPassword: body[`repeat-password`],
       isAuthor: false,
-      avatar: file.filename || ``
+      avatar: file && file.filename || ``
     };
 
     try {
