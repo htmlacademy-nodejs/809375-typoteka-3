@@ -23,7 +23,6 @@ class ApiProvider {
     return response.data;
   }
 
-
   async createUser(user) {
     const response = await this.client.post(`/users`, user);
 
@@ -68,6 +67,25 @@ class ApiProvider {
     } catch (err) {
       throw new Error(JSON.stringify(err.response.data));
     }
+  }
+
+  async createComment(id, data) {
+    const response = await this.client.post(`/comments/${id}`, {...data});
+
+    return response.data;
+  }
+
+  async getComments() {
+    const response = await this.client.get(`/comments`);
+
+
+    return response.data;
+  }
+
+  async deleteComment(commentId) {
+    const response = await this.client.delete(`/comments/${commentId}`);
+
+    return response.data;
   }
 }
 
