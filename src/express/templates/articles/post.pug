@@ -9,7 +9,7 @@ block content
         .post__wrapper
           .post__head
             a.post__backwards.button.button--backwards(href='/') Назад
-            //+postDate(article.createdAt)
+            +formatDate(article.createdAt, true, 'post__date')
             h2.post__title.title.title--main #{article.title}
           .post__picture
             img(src=`/img/${article.photo}` alt='Фото поста')
@@ -17,17 +17,18 @@ block content
             p #{article.fullText}
       .post__wrapper.post__wrapper--comments
         section.post__comments.comments
-          h2.comments__title.title.title--middle Комментарии
-          ul.comments__list
-            each comment in article.comments
-              li.comments__comment
-                .comments__avatar.avatar
-                  img(src=`/img/${comment.users.avatar}` alt='Аватар пользователя')
-                .comments__text
-                  .comments__head
-                    p=`${comment.users.firstName} ${comment.users.lastName} •`
-                    time.comments__date(datetime= comment.createdAt)= new Date(comment.createdAt).toLocaleString()
-                  p.comments__message #{comment.text}
+          h2.comments__title.title.title--middle= article.comments.length > 0 ? "Комментарии" : 'Комментарии отсутствуют'
+          if (article.comments.length)
+            ul.comments__list
+              each comment in article.comments
+                li.comments__comment
+                  .comments__avatar.avatar
+                    img(src=`/img/${comment.users.avatar}` alt='Аватар пользователя')
+                  .comments__text
+                    .comments__head
+                      p=`${comment.users.firstName} ${comment.users.lastName} •`
+                      time.comments__date(datetime= comment.createdAt)= new Date(comment.createdAt).toLocaleString()
+                    p.comments__message #{comment.text}
           if(user)
             .comments__footer.comments__footer--user
               form(action=`/articles/${article.id}/comments` method='POST')

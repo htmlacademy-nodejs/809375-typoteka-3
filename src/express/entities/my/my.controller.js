@@ -28,19 +28,11 @@ const myController = (api) => {
       ],
       async (req, res) => {
         const {user} = req.session;
-        const articles = await api.getArticles({comments: true});
-        const comments = articles.reduce((acc, article) => {
-          const articleCommentsWithTitle = {
-            title: article.title,
-            comments: article.comments,
-          };
-
-          return [...acc, articleCommentsWithTitle];
-        }, []);
+        const response = await api.getComments();
 
         res.render(`my/comments`, {
           classNames: [`wrapper`, `wrapper--nobackground`],
-          comments,
+          comments: response.comments,
           user,
         });
       });
@@ -50,6 +42,13 @@ const myController = (api) => {
     checkIsUserAuthor,
   ],
   (req, res) => res.render(`my/all-categories`));
+
+  route.post(`/comments/:commentId`, async (req, res) => {
+    const {commentId} = req.params;
+    await api.deleteComment(commentId);
+
+    res.redirect(`/my/comments`);
+  });
 
   return route;
 };
