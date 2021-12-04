@@ -48,7 +48,6 @@ const articleController = (api) => {
 
           res.redirect(`/my`);
         } catch (error) {
-          console.log(error);
           res.render(`errors/custom`, {errorMessage: error.message, user});
           res.status(StatusCodes.BAD_REQUEST).send(error.message);
         }
@@ -58,12 +57,34 @@ const articleController = (api) => {
     const {user} = req.session;
     const {id} = req.params;
 
-    const article = await api.getArticle(id);
+    const {article, comments} = await api.getArticle(id);
 
     res.render(`articles/post`, {
       user,
       article,
+      comments,
     });
+  });
+
+  route.post(`/:articleId/comments`, checkUserAuthMiddleware, async (req, res) => {
+    const {articleId} = req.params;
+    const {user} = req.session;
+
+    try {
+      await api.createComment(articleId, {...req.body, "user_id": user.id});
+
+      res.redirect(`/articles/${articleId}`);
+    } catch (err) {
+      const {article, comments} = await api.getArticle(articleId);
+
+      console.log(err.response.data.errors, `aaa`);
+
+      res.render(`articles/post`, {
+        user,
+        article,
+        comments
+      });
+    }
   });
 
   route.get(`/category/:id`, async (req, res) => {

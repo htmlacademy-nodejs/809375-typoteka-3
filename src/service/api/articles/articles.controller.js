@@ -25,7 +25,7 @@ const articlesController = (articlesService, commentService) => {
 
   route.post(`/`,
       [
-        articleValidator.create
+        articleValidator.create,
       ],
       (async (req, res) => {
         const result = validationResult(req);
@@ -51,13 +51,12 @@ const articlesController = (articlesService, commentService) => {
 
         const {articleId} = req.params;
 
-        if (errors.length === 0) {
-          const offer = await articlesService.update(articleId, req.body);
-
-          return res.status(StatusCodes.OK).json(offer);
+        if (errors.length) {
+          return res.status(StatusCodes.UNPROCESSABLE_ENTITY).json({errors: result.mapped()});
         }
 
-        return res.status(StatusCodes.UNPROCESSABLE_ENTITY).json({errors: result.mapped()});
+        const offer = await articlesService.update(articleId, req.body);
+        return res.status(StatusCodes.OK).json(offer);
       }));
 
   route.delete(`/:articleId`,
@@ -72,35 +71,28 @@ const articlesController = (articlesService, commentService) => {
         return res.status(StatusCodes.OK).json(deletedArticle);
       }));
 
-  route.get(`/:articleId`,
-      [
-        articleValidator.exist(articlesService)
-      ]
-      , (async (req, res) => {
-        const {articleId} = req.params;
+  route.get(`/:articleId`, articleValidator.exist(articlesService), (async (req, res) => {
+    const {articleId} = req.params;
 
-        const article = await articlesService.findByID(articleId);
-
-        return res.status(StatusCodes.OK).json(article);
-      }));
+    const article = await articlesService.findByID(articleId);
+    const comments = await commentService.findAllByArticleId(articleId);
+    return res.status(StatusCodes.OK).json({article, comments});
+  }));
 
   route.get(`/:articleId/comments`,
       [
-        articleValidator.exist(articlesService)
+        articleValidator.exist(articlesService),
       ],
       (async (req, res) => {
         const {articleId} = req.params;
 
-        const article = await articlesService.findByID(articleId);
-
-        const comments = await commentService.findAll(article.id);
-
+        const comments = await commentService.findAllByArticleId(articleId);
         return res.status(StatusCodes.OK).json(comments);
       }));
 
   route.delete(`/:articleId/comments/:commentId`,
       [
-        articleValidator.exist(articlesService), commentValidators.exist(commentService, articlesService)
+        articleValidator.exist(articlesService), commentValidators.exist(commentService, articlesService),
       ],
       async (req, res) => {
         const {commentId} = req.params;
@@ -112,7 +104,7 @@ const articlesController = (articlesService, commentService) => {
 
   route.post(`/:articleId/comments/`,
       [
-        articleValidator.exist(articlesService), commentValidators.create
+        articleValidator.exist(articlesService), commentValidators.create,
       ],
       async (req, res) => {
         const result = validationResult(req);
@@ -120,15 +112,13 @@ const articlesController = (articlesService, commentService) => {
         const {articleId} = req.params;
         const {errors} = result;
 
-        const article = await articlesService.findByID(articleId);
-
-        if (errors.length === 0) {
-          const comment = await commentService.create(article, req.body);
-
-          return res.status(StatusCodes.OK).json(comment);
+        if (errors.length) {
+          return res.status(StatusCodes.UNPROCESSABLE_ENTITY).json({errors: result.mapped()});
         }
 
-        return res.status(StatusCodes.UNPROCESSABLE_ENTITY).json({errors: result.mapped()});
+        const comment = await commentService.create(articleId, req.body);
+
+        return res.status(StatusCodes.OK).json(comment);
       });
 
   return route;

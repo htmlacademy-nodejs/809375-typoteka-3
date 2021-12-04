@@ -30,19 +30,7 @@ class ArticlesService {
 
   async findByID(id) {
     return this._Article.findByPk(id, {
-      include: [Alias.CATEGORIES, {
-        model: this._Comment,
-        as: Alias.COMMENTS,
-        include: [
-          {
-            model: this._User,
-            as: Alias.USERS,
-            attributes: {
-              exclude: [`passwordHash`]
-            }
-          }
-        ]
-      }],
+      include: [Alias.CATEGORIES],
     });
   }
 

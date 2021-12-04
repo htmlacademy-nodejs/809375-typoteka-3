@@ -70,7 +70,7 @@ class ApiProvider {
   }
 
   async createComment(id, data) {
-    const response = await this.client.post(`/comments/${id}`, {...data});
+    const response = await this.client.post(`/articles/${id}/comments`, {...data});
 
     return response.data;
   }
