@@ -5,6 +5,8 @@ const Alias = require(`../../models/alias`);
 class ArticlesService {
   constructor(db) {
     this._Article = db.models.Article;
+    this._User = db.models.User;
+    this._Comment = db.models.Comment;
   }
 
   async create(article) {
@@ -28,7 +30,7 @@ class ArticlesService {
 
   async findByID(id) {
     return this._Article.findByPk(id, {
-      include: [Alias.CATEGORIES, Alias.COMMENTS],
+      include: [Alias.CATEGORIES],
     });
   }
 

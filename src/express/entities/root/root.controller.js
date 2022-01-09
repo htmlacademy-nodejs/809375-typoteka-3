@@ -21,6 +21,7 @@ const rootController = (api) => {
     const offset = (page - 1) * ARTICLES_PER_PAGE;
 
     const {count, articles} = await api.getArticles({comments: true, offset, limit});
+    const categories = await api.getCategories({needCount: true});
 
     const totalPages = Math.ceil(count / ARTICLES_PER_PAGE);
 
@@ -29,6 +30,7 @@ const rootController = (api) => {
       page,
       totalPages,
       user,
+      categories,
     });
   });
 

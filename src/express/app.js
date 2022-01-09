@@ -60,7 +60,7 @@ app.use(`/`, authController(api));
 app.use(`/my`, myController(api));
 app.use(`/articles`, articleController(api));
 app.use(`/search`, searchController(api));
-app.use(`/categories`, categoriesController());
+app.use(`/categories`, categoriesController(api));
 
 app.use((req, res) => res.status(StatusCodes.NOT_FOUND).render(`errors/404`));
 app.use((err, _req, res, _next) => {

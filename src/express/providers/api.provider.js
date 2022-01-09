@@ -47,8 +47,14 @@ class ApiProvider {
     return response.data;
   }
 
-  async getCategories() {
-    const response = await this.client.get(`/categories`);
+  async getCategories({needCount} = {}) {
+    const response = await this.client.get(`/categories`, {params: {needCount}});
+
+    return response.data;
+  }
+
+  async getCategory({categoryId, limit, offset}) {
+    const response = await this.client.get(`/categories/${categoryId}`, {params: {limit, offset}});
 
     return response.data;
   }
@@ -61,6 +67,25 @@ class ApiProvider {
     } catch (err) {
       throw new Error(JSON.stringify(err.response.data));
     }
+  }
+
+  async createComment(id, data) {
+    const response = await this.client.post(`/articles/${id}/comments`, {...data});
+
+    return response.data;
+  }
+
+  async getComments() {
+    const response = await this.client.get(`/comments`);
+
+
+    return response.data;
+  }
+
+  async deleteComment(commentId) {
+    const response = await this.client.delete(`/comments/${commentId}`);
+
+    return response.data;
   }
 }
 

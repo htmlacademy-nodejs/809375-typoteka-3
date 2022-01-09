@@ -6,10 +6,11 @@ const csrf = require(`csurf`);
 
 const {getImageMiddleware} = require(`../../lib/multer`);
 const {checkUserAuthMiddleware, checkIsUserAuthor} = require(`../../middlewares/auth`);
+const {UPLOADED_FILE_INPUT_NAME, ARTICLES_PER_PAGE} = require(`../../../constants`);
 
 const articleController = (api) => {
   const route = new Router();
-  const imageMiddleware = getImageMiddleware(`upload`);
+  const imageMiddleware = getImageMiddleware(UPLOADED_FILE_INPUT_NAME);
   const csrfProtection = csrf({cookie: false});
 
   route.get(`/add`,
@@ -42,28 +43,77 @@ const articleController = (api) => {
           fullText: body[`full-text`],
         };
 
-        console.log(`123123`);
-
         try {
           await api.createArticle(newArticle);
 
           res.redirect(`/my`);
         } catch (error) {
-          console.log(error);
           res.render(`errors/custom`, {errorMessage: error.message, user});
           res.status(StatusCodes.BAD_REQUEST).send(error.message);
         }
       });
-  route.get(`/:id`, (req, res) => {
+
+  route.get(`/:id`, async (req, res) => {
+    const {user} = req.session;
+    const {id} = req.params;
+
+    const {article, comments} = await api.getArticle(id);
+
+    res.render(`articles/post`, {
+      user,
+      article,
+      comments,
+    });
+  });
+
+  route.post(`/:articleId/comments`, checkUserAuthMiddleware, async (req, res) => {
+    const {articleId} = req.params;
     const {user} = req.session;
 
-    res.render(`articles/post`, {user});
-  });
-  route.get(`/category/:id`, (req, res) => {
-    const {user} = req.session;
+    try {
+      await api.createComment(articleId, {...req.body, "user_id": user.id});
 
-    res.render(`articles/articles-by-category`, {user});
+      res.redirect(`/articles/${articleId}`);
+    } catch (err) {
+      const {article, comments} = await api.getArticle(articleId);
+
+      console.log(err.response.data.errors, `aaa`);
+
+      res.render(`articles/post`, {
+        user,
+        article,
+        comments
+      });
+    }
   });
+
+  route.get(`/category/:id`, async (req, res) => {
+    const {user} = req.session;
+    const {id} = req.params;
+    let {page = 1} = req.query;
+
+    const offset = (page - 1) * ARTICLES_PER_PAGE;
+
+    const [categories, {category, count, articlesByCategory}] = await Promise.all([
+      api.getCategories({needCount: true}),
+      api.getCategory({limit: ARTICLES_PER_PAGE, categoryId: id, offset}),
+    ]);
+
+    const totalPages = Math.ceil(count / ARTICLES_PER_PAGE);
+
+    const options = {
+      user,
+      count,
+      page: +page,
+      totalPages,
+      categories,
+      category,
+      articles: articlesByCategory,
+    };
+
+    res.render(`articles/articles-by-category`, {...options});
+  });
+
   route.get(`/edit/:id`, async (req, res) => {
     const {id} = req.params;
     const {user} = req.session;

@@ -5,13 +5,13 @@
   "main": "./src/service/service.js",
   "scripts": {
     "eslint": "eslint --ext .js src/",
-    "fill-db": "cross-env LOG_LEVEL=info node -r dotenv/config ./src/service/service.js -f 11",
+    "fill-db": "cross-env LOG_LEVEL=info node -r dotenv/config ./src/service/service.js -f 20",
     "rest-api": "cross-env NODE_ENV=production node -r dotenv/config ./src/service/service.js --server",
     "rest-api::debug": "cross-env LOG_LEVEL=info NODE_ENV=development nodemon -r dotenv/config ./src/service/service.js --server | ./node_modules/.bin/pino-pretty",
-    "ssr": "node -r dotenv/config src/express/app.js",
-    "ssr::debug": "nodemon -r dotenv/config src/express/app.js",
-    "start": "concurrently --prefix \"{time} — {name}\" --names \"BACKEND, SSR\" --prefix-colors \"green,blue\" \"npm run rest-api\" \"npm run ssr\"",
-    "start::debug": "concurrently --prefix \"{time} — {name}\" --names \"BACKEND, SSR\" --prefix-colors \"green,blue\" \"npm run rest-api::debug\" \"npm run ssr::debug\"",
+    "client": "node -r dotenv/config src/express/app.js",
+    "client::debug": "nodemon -r dotenv/config src/express/app.js",
+    "start": "concurrently --prefix \"{time} — {name}\" --names \"BACKEND, FRONTEND\" --prefix-colors \"green,blue\" \"npm run rest-api\" \"npm run client\"",
+    "start::debug": "concurrently --prefix \"{time} — {name}\" --names \"BACKEND, FRONTEND\" --prefix-colors \"green,blue\" \"npm run rest-api::debug\" \"npm run client::debug\"",
     "test": "npm run eslint & npm run test:all",
     "test:all": "jest",
     "test:rest": "jest .e2e.test.js"

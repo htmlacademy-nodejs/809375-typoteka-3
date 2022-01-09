@@ -61,8 +61,8 @@ exports.exist = (userService) => async (req, res, next) => {
   const {email} = req.body;
 
   try {
-    const isEmainExist = await userService.isEmailExist(email);
-    if (isEmainExist) {
+    const isEmailExist = await userService.isEmailExist(email);
+    if (isEmailExist) {
       res.status(StatusCodes.BAD_REQUEST).json({errors: [{msg: `User with such email exists.`}]});
     } else {
       next();

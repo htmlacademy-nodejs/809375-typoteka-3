@@ -7,6 +7,9 @@ const EXPRESS_DEFAULT_PORT = process.env.EXPRESS_PORT || 3000;
 const MAX_COMMENTS_AMOUNT = 5;
 const MAX_ID_LENGTH = 4;
 const ARTICLES_PER_PAGE = 8;
+const UPLOADED_FILE_INPUT_NAME = `upload`;
+const MAX_UPLOAD_FILE_SIZE = 1048576;
+const FILE_TYPES = [`image/png`, `image/jpg`, `image/jpeg`];
 
 const ProjectPath = {
   ROOT_FOLDER: path.resolve(__dirname, `..`),
@@ -28,5 +31,8 @@ module.exports = {
   Env,
   MAX_COMMENTS_AMOUNT,
   MAX_ID_LENGTH,
+  UPLOADED_FILE_INPUT_NAME,
+  MAX_UPLOAD_FILE_SIZE,
+  FILE_TYPES,
   ProjectPath,
 };

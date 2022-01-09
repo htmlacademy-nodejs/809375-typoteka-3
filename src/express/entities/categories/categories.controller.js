@@ -1,18 +1,27 @@
 "use strict";
 
 const {Router} = require(`express`);
+const {checkUserAuthMiddleware, checkIsUserAuthor} = require(`../../middlewares/auth`);
 
-const categoriesController = () => {
+const categoriesController = (api) => {
   const route = new Router();
 
-  route.get(`/`, (req, res) => {
-    const {user} = req.session;
+  route.get(`/`,
+      [
+        checkUserAuthMiddleware,
+        checkIsUserAuthor,
+      ],
+      async (req, res) => {
+        const {user} = req.session;
 
-    res.render(`root/all-categories`, {
-      classNames: [`wrapper`, `wrapper--nobackground`],
-      user,
-    });
-  });
+        const categories = await api.getCategories();
+
+        res.render(`root/all-categories`, {
+          classNames: [`wrapper`, `wrapper--nobackground`],
+          user,
+          categories,
+        });
+      });
 
   return route;
 };

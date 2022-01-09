@@ -11,6 +11,7 @@ html(lang='ru')
     link(rel='preload' href='/fonts/SFProDisplay-Regular.woff2' as='font' crossorigin='anonymous')
     link(rel='stylesheet' href='/css/style.min.css')
   body
+    include mixins
     div(class=classNames ? classNames : 'wrapper')
       block header
         include partials/header

@@ -3,6 +3,9 @@
 const {ReasonPhrases} = require(`http-status-codes`);
 const {Router} = require(`express`);
 
+const {logger} = require(`../../../service/logger`);
+const upload = require(`../../middlewares/upload`);
+
 const authController = (api) => {
   const route = new Router();
 
@@ -31,8 +34,9 @@ const authController = (api) => {
 
     res.render(`root/sign-up`, {user});
   });
-  route.post(`/register`, async (req, res) => {
-    const {body} = req;
+  route.post(`/register`, upload(logger, `registration`), async (req, res) => {
+    const {body, file} = req;
+
     const {user} = req.session;
 
     const userData = {
@@ -42,6 +46,7 @@ const authController = (api) => {
       password: body.password,
       repeatPassword: body[`repeat-password`],
       isAuthor: false,
+      avatar: file && file.filename || `avatar-1.png`,
     };
 
     try {
